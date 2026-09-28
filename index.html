@@ -198,26 +198,41 @@
       background-color: rgba(255, 59, 20, 0.08) !important;
     }
 
-    /* Live Text Editing Mode Styles */
-    body.is-editing [data-editable="true"],
-    body.is-editing h1,
-    body.is-editing h2,
-    body.is-editing h3,
-    body.is-editing h4,
-    body.is-editing p,
-    body.is-editing span:not(.no-edit),
-    body.is-editing li {
-      transition: outline 0.15s ease, background 0.15s ease;
+    /* Universal Instant Text Editing Styles */
+    #deck-main section[id^="slide-"] {
+      user-select: text !important;
+      -webkit-user-select: text !important;
     }
-    body.is-editing [contenteditable="true"]:hover {
-      outline: 1px dashed rgba(255, 59, 20, 0.6) !important;
-      outline-offset: 3px;
-      cursor: text;
+    #deck-main section[id^="slide-"] * {
+      user-select: text;
+      -webkit-user-select: text;
     }
-    body.is-editing [contenteditable="true"]:focus {
+    #deck-main section[id^="slide-"] button,
+    #deck-main section[id^="slide-"] .pointer-events-none {
+      user-select: none !important;
+      -webkit-user-select: none !important;
+    }
+    [contenteditable="true"] {
+      cursor: text !important;
+      outline: none;
+      transition: outline 0.12s ease, background-color 0.12s ease;
+    }
+    [contenteditable="true"]:hover {
+      outline: 1px dashed rgba(255, 59, 20, 0.5) !important;
+      outline-offset: 2px;
+    }
+    [contenteditable="true"]:focus {
       outline: 1.5px solid #FF3B14 !important;
-      outline-offset: 3px;
-      background: rgba(255, 59, 20, 0.08) !important;
+      outline-offset: 2px;
+      background-color: rgba(255, 59, 20, 0.08) !important;
+    }
+    body.is-editing [contenteditable="true"] {
+      outline: 1px dashed rgba(255, 255, 255, 0.2);
+      outline-offset: 2px;
+    }
+    html.light body.is-editing [contenteditable="true"] {
+      outline: 1px dashed rgba(0, 0, 0, 0.2);
+      outline-offset: 2px;
     }
 
     /* Slide Box Layout & Responsive Alignment */
@@ -1094,7 +1109,7 @@
       const downloadBtn = document.getElementById('downloadHtmlBtn');
       const resetBtn = document.getElementById('resetEditsBtn');
       const deckMain = document.getElementById('deck-main');
-      let isEditing = false;
+      let showGuides = false;
       const STORAGE_KEY = 'cemento_deck_edits_v1';
 
       // 1. Restore saved edits from localStorage on load if available
@@ -1107,67 +1122,99 @@
         console.warn("Could not access localStorage:", err);
       }
 
-      const editableSelectors = 'h1, h2, h3, h4, p, span:not(.no-edit), li, .text-sm, .text-xs, .text-base';
-
-      function setEditMode(enable) {
-        isEditing = enable;
-        document.body.classList.toggle('is-editing', isEditing);
-
-        const slides = document.querySelectorAll('section[id^="slide-"]');
+      // 2. Make all text elements on all slides directly editable
+      function makeAllTextEditable(root = deckMain) {
+        const slides = root.querySelectorAll('section[id^="slide-"]');
         slides.forEach(slide => {
-          const elements = slide.querySelectorAll(editableSelectors);
+          const elements = slide.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, li, div, em, strong, b, i, a');
           elements.forEach(el => {
-            if (el.children.length === 0 || Array.from(el.childNodes).some(n => n.nodeType === Node.TEXT_NODE && n.textContent.trim().length > 0)) {
-              if (enable) {
+            if (el.closest('button') || el.closest('select') || el.closest('input')) return;
+            if (el.classList.contains('pointer-events-none') && (el.textContent.trim() === '+' || el.textContent.trim() === '')) return;
+
+            const isLeaf = el.children.length === 0 && el.textContent.trim().length > 0;
+            const hasDirectText = Array.from(el.childNodes).some(n => n.nodeType === Node.TEXT_NODE && n.textContent.trim().length > 0);
+
+            if (isLeaf || hasDirectText) {
+              if (!el.classList.contains('grid') && !el.classList.contains('flex-col')) {
                 el.setAttribute('contenteditable', 'true');
                 el.setAttribute('spellcheck', 'false');
-              } else {
-                el.removeAttribute('contenteditable');
               }
             }
           });
         });
-
-        if (isEditing) {
-          editBtn.classList.add('bg-vermilion', 'border-vermilion', 'text-white');
-          editBtn.classList.remove('bg-carbon-surface', 'border-carbon-border', 'text-neutral-200');
-          editText.textContent = 'EDIT TEXT: ON (CLICK TO EDIT)';
-        } else {
-          editBtn.classList.remove('bg-vermilion', 'border-vermilion', 'text-white');
-          editBtn.classList.add('bg-carbon-surface', 'border-carbon-border', 'text-neutral-200');
-          editText.textContent = 'EDIT TEXT: OFF';
-        }
       }
 
+      // Initialize all text as editable on start
+      makeAllTextEditable();
+
+      // Direct click backup: Ensure clicking any text element activates editing
+      deckMain.addEventListener('click', (e) => {
+        if (e.target.closest('button') || e.target.closest('select') || e.target.closest('input') || e.target.closest('form')) return;
+        const slide = e.target.closest('section[id^="slide-"]');
+        if (!slide) return;
+
+        const target = e.target;
+        if (target !== slide && !target.classList.contains('grid')) {
+          target.setAttribute('contenteditable', 'true');
+          target.setAttribute('spellcheck', 'false');
+        }
+      });
+
+      // Clean plain-text paste handler (prevents unwanted rich formatting)
+      deckMain.addEventListener('paste', (e) => {
+        const editable = e.target.closest('[contenteditable="true"]');
+        if (editable) {
+          e.preventDefault();
+          const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+          document.execCommand('insertText', false, text);
+        }
+      });
+
+      // Visual Guides toggle button
       if (editBtn) {
+        if (editText) editText.textContent = 'DIRECT EDIT: ACTIVE';
         editBtn.addEventListener('click', () => {
-          setEditMode(!isEditing);
+          showGuides = !showGuides;
+          document.body.classList.toggle('is-editing', showGuides);
+          if (showGuides) {
+            editBtn.classList.add('bg-vermilion', 'border-vermilion', 'text-white');
+            editBtn.classList.remove('bg-carbon-surface', 'border-carbon-border', 'text-neutral-200');
+            if (editText) editText.textContent = 'EDIT BOXES: VISIBLE';
+          } else {
+            editBtn.classList.remove('bg-vermilion', 'border-vermilion', 'text-white');
+            editBtn.classList.add('bg-carbon-surface', 'border-carbon-border', 'text-neutral-200');
+            if (editText) editText.textContent = 'DIRECT EDIT: ACTIVE';
+          }
         });
       }
 
-      // 2. Real-time Auto-Save to localStorage on typing
+      // 3. Real-time Auto-Save to localStorage on typing or focusout
+      function triggerAutoSave() {
+        try {
+          localStorage.setItem(STORAGE_KEY, deckMain.innerHTML);
+          if (saveStatus) {
+            saveStatus.classList.remove('hidden');
+            setTimeout(() => saveStatus.classList.add('hidden'), 2000);
+          }
+        } catch (err) {
+          console.error("Failed to auto-save to localStorage:", err);
+        }
+      }
+
       let saveTimer = null;
       deckMain.addEventListener('input', () => {
         clearTimeout(saveTimer);
-        saveTimer = setTimeout(() => {
-          try {
-            localStorage.setItem(STORAGE_KEY, deckMain.innerHTML);
-            if (saveStatus) {
-              saveStatus.classList.remove('hidden');
-              setTimeout(() => saveStatus.classList.add('hidden'), 2000);
-            }
-          } catch (err) {
-            console.error("Failed to auto-save to localStorage:", err);
-          }
-        }, 400);
+        saveTimer = setTimeout(triggerAutoSave, 400);
+      });
+      deckMain.addEventListener('focusout', (e) => {
+        if (e.target.closest('[contenteditable="true"]')) {
+          triggerAutoSave();
+        }
       });
 
-      // 3. Download Updated HTML file with current edits baked in
+      // 4. Download Updated HTML file with current edits baked in
       if (downloadBtn) {
         downloadBtn.addEventListener('click', () => {
-          const wasEditing = isEditing;
-          if (wasEditing) setEditMode(false);
-
           const fullHtml = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
           const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
           const url = URL.createObjectURL(blob);
@@ -1178,12 +1225,10 @@
           a.click();
           document.body.removeChild(a);
           URL.revokeObjectURL(url);
-
-          if (wasEditing) setEditMode(true);
         });
       }
 
-      // 4. Reset to Original Template
+      // 5. Reset to Original Template
       if (resetBtn) {
         resetBtn.addEventListener('click', () => {
           if (confirm("Reset all slides to the original strategy proposal template? Any unsaved edits will be discarded.")) {
@@ -1192,6 +1237,9 @@
           }
         });
       }
+
+      // Expose helper to refresh newly added slides
+      window.refreshEditableElements = makeAllTextEditable;
     })();
 
     // Auto-Fit, Overview Grid & Zoom Controller
@@ -1390,6 +1438,7 @@
         `;
 
         deckMain.appendChild(newSlideWrapper);
+        window.refreshEditableElements?.(newSlideWrapper);
 
         // Re-scale new slide
         zoomController.applyScale();
