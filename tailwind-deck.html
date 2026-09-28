@@ -59,10 +59,143 @@
         linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
       background-size: 160px 160px;
     }
-    .light .bg-grid-pattern {
+    html.light .bg-grid-pattern {
       background-image: 
         linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px) !important;
+      background-size: 160px 160px;
+    }
+
+    /* ========================================================================
+       LIGHT THEME SPEC (CONCRETE WHITE / BAUHAUS LIGHT SPEC)
+       ======================================================================== */
+    html.light body {
+      background-color: #ECECE8 !important;
+      color: #111111 !important;
+    }
+    html.light header {
+      background-color: rgba(244, 244, 241, 0.95) !important;
+      border-color: #DCDCDA !important;
+      color: #111111 !important;
+    }
+    html.light header span.text-white,
+    html.light header button,
+    html.light header select {
+      color: #111111 !important;
+    }
+    html.light header select {
+      background-color: #E5E5DF !important;
+      color: #111111 !important;
+    }
+    html.light header .bg-carbon-surface {
+      background-color: #E5E5DF !important;
+      border-color: #DCDCDA !important;
+      color: #111111 !important;
+    }
+    html.light header .text-neutral-400 {
+      color: #666666 !important;
+    }
+
+    /* Slides Canvas Frame */
+    html.light .slide-outer-box > section,
+    html.light section[id^="slide-"] {
+      background-color: #F4F4F1 !important;
+      border-color: #DCDCDA !important;
+      color: #111111 !important;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    /* Internal Surfaces & Modular Containers */
+    html.light .slide-outer-box .bg-carbon,
+    html.light .slide-outer-box .bg-carbon-surface,
+    html.light .slide-outer-box .bg-carbon-alt,
+    html.light .slide-outer-box [class*="bg-[#18181A]"],
+    html.light .slide-outer-box [class*="bg-[#141416]"],
+    html.light .slide-outer-box [class*="bg-[#0D0D0E]"] {
+      background-color: #ECECE8 !important;
+    }
+
+    /* Hairline Grid Dividers */
+    html.light .slide-outer-box .border-carbon-border,
+    html.light .slide-outer-box .border-neutral-700,
+    html.light .slide-outer-box .border-neutral-800,
+    html.light .slide-outer-box [class*="border-[#2E2E32]"] {
+      border-color: #DCDCDA !important;
+    }
+
+    /* Typography Hierarchy in Light Mode */
+    html.light .slide-outer-box .text-white,
+    html.light .slide-outer-box h1,
+    html.light .slide-outer-box h2,
+    html.light .slide-outer-box h3,
+    html.light .slide-outer-box h4 {
+      color: #111111 !important;
+    }
+    html.light .slide-outer-box .text-neutral-200 {
+      color: #222222 !important;
+    }
+    html.light .slide-outer-box .text-neutral-300 {
+      color: #333333 !important;
+    }
+    html.light .slide-outer-box .text-neutral-400 {
+      color: #555555 !important;
+    }
+    html.light .slide-outer-box .text-neutral-500 {
+      color: #777777 !important;
+    }
+    html.light .slide-outer-box .text-neutral-600 {
+      color: #999999 !important;
+    }
+    html.light .slide-outer-box .text-neutral-700 {
+      color: #CCCCCC !important;
+    }
+
+    /* Slide Header Meta Bar above frame */
+    html.light .slide-outer-box .absolute.-top-8 {
+      color: #555555 !important;
+    }
+    html.light .slide-outer-box .absolute.-top-8 .bg-carbon-surface {
+      background-color: #ECECE8 !important;
+      border-color: #DCDCDA !important;
+      color: #222222 !important;
+    }
+
+    /* Reorder Manager Modal in Light Mode */
+    html.light #reorderModal .bg-carbon {
+      background-color: #F4F4F1 !important;
+      border-color: #DCDCDA !important;
+      color: #111111 !important;
+    }
+    html.light #reorderModal .bg-carbon-surface {
+      background-color: #ECECE8 !important;
+      border-color: #DCDCDA !important;
+    }
+    html.light #reorderModal .text-white {
+      color: #111111 !important;
+    }
+    html.light #reorderModal .border-carbon-border {
+      border-color: #DCDCDA !important;
+    }
+    html.light #reorderModal .modal-up-btn,
+    html.light #reorderModal .modal-down-btn {
+      background-color: #E5E5DF !important;
+      border-color: #DCDCDA !important;
+      color: #111111 !important;
+    }
+
+    /* Accents & Vermilion highlights preserved */
+    html.light .text-vermilion {
+      color: #FF3B14 !important;
+    }
+    html.light .bg-vermilion {
+      background-color: #FF3B14 !important;
+      color: #FFFFFF !important;
+    }
+    html.light .border-vermilion {
+      border-color: #FF3B14 !important;
+    }
+    html.light .bg-vermilion-dim {
+      background-color: rgba(255, 59, 20, 0.08) !important;
     }
 
     /* Live Text Editing Mode Styles */
@@ -1466,11 +1599,26 @@
 
     // Theme toggle
     const themeToggle = document.getElementById('themeToggle');
-    themeToggle.addEventListener('click', () => {
-      const isLight = document.documentElement.classList.toggle('light');
-      document.documentElement.classList.toggle('dark');
-      themeToggle.textContent = isLight ? 'THEME: LIGHT' : 'THEME: DARK';
-    });
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        const isLight = document.documentElement.classList.toggle('light');
+        document.documentElement.classList.toggle('dark', !isLight);
+        themeToggle.textContent = isLight ? 'THEME: LIGHT' : 'THEME: DARK';
+        try {
+          localStorage.setItem('cemento_theme', isLight ? 'light' : 'dark');
+        } catch (e) {}
+      });
+
+      // Restore saved theme on load
+      try {
+        const savedTheme = localStorage.getItem('cemento_theme');
+        if (savedTheme === 'light') {
+          document.documentElement.classList.add('light');
+          document.documentElement.classList.remove('dark');
+          themeToggle.textContent = 'THEME: LIGHT';
+        }
+      } catch (e) {}
+    }
 
     // Copy URL for HTML to Figma plugin
     const copyAllBtn = document.getElementById('copyAllBtn');
