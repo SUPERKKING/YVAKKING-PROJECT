@@ -97,6 +97,26 @@
       transition: zoom 0.2s ease, transform 0.2s ease;
       transform-origin: top center;
     }
+
+    /* Light-Table Overview Mode (Grid of all slides) */
+    body.is-overview-grid #deck-main {
+      flex-direction: row !important;
+      flex-wrap: wrap !important;
+      justify-content: center !important;
+      gap: 32px !important;
+      padding: 96px 32px !important;
+    }
+    body.is-overview-grid .slide-outer-box {
+      margin: 0 !important;
+      cursor: pointer;
+      position: relative;
+      border: 1px solid var(--border-color);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    body.is-overview-grid .slide-outer-box:hover {
+      border-color: #FF3B14 !important;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7) !important;
+    }
   </style>
 </head>
 <body class="bg-carbon text-white font-body antialiased transition-colors duration-200">
@@ -112,6 +132,18 @@
     <div class="flex items-center gap-3">
       <!-- Auto-Save Status Indicator -->
       <span id="saveStatus" class="hidden font-mono text-[11px] text-vermilion tracking-wider uppercase">✓ AUTO-SAVED</span>
+
+      <!-- Add New Slide Button -->
+      <button id="addSlideBtn" class="px-3 py-1 font-mono text-xs border border-vermilion bg-vermilion text-white hover:bg-vermilion-hover transition flex items-center gap-1 font-bold tracking-wider uppercase" title="Add a new 1920x1080 slide to the deck">
+        <span>+</span>
+        <span>ADD SLIDE</span>
+      </button>
+
+      <!-- Overview Grid Mode Toggle -->
+      <button id="overviewToggleBtn" class="px-3 py-1 font-mono text-xs border border-carbon-border bg-carbon-surface hover:bg-carbon-hover text-neutral-200 transition flex items-center gap-1.5" title="Toggle Light Table Overview grid of all slides">
+        <span>▦</span>
+        <span id="overviewBtnText">VIEW ALL</span>
+      </button>
 
       <!-- Screen Scale / Alignment Control -->
       <div class="flex items-center gap-1.5 font-mono text-xs border border-carbon-border bg-carbon-surface px-2.5 py-1">
@@ -995,17 +1027,23 @@
       }
     })();
 
-    // Auto-Fit & Zoom Controller (Prevents left-side cutoff on all viewports)
-    (function initZoomController() {
-      const slideBoxes = document.querySelectorAll('.slide-outer-box');
+    // Auto-Fit, Overview Grid & Zoom Controller
+    const zoomController = (function() {
       const zoomSelect = document.getElementById('zoomSelect');
+      const overviewBtn = document.getElementById('overviewToggleBtn');
+      const overviewText = document.getElementById('overviewBtnText');
       let currentMode = 'fit';
+      let isOverview = false;
 
       function applyScale() {
+        const slideBoxes = document.querySelectorAll('.slide-outer-box');
         const winWidth = window.innerWidth;
         let scale = 1;
 
-        if (currentMode === 'fit') {
+        if (isOverview) {
+          // In overview mode, display all slides as thumbnail cards (~500px wide)
+          scale = 0.28;
+        } else if (currentMode === 'fit') {
           // Leave 64px padding (32px on each side) for clean Bauhaus framing
           const targetWidth = winWidth - 64;
           scale = Math.min(targetWidth / 1920, 1);
@@ -1018,7 +1056,6 @@
         }
 
         slideBoxes.forEach(box => {
-          // CSS zoom adjusts layout and scroll bounds naturally
           if ('zoom' in document.body.style) {
             box.style.zoom = scale;
           } else {
@@ -1029,12 +1066,45 @@
         });
       }
 
+      function toggleOverview(forceState) {
+        isOverview = typeof forceState === 'boolean' ? forceState : !isOverview;
+        document.body.classList.toggle('is-overview-grid', isOverview);
+
+        if (isOverview) {
+          overviewBtn.classList.add('bg-vermilion', 'border-vermilion', 'text-white');
+          overviewBtn.classList.remove('bg-carbon-surface', 'border-carbon-border', 'text-neutral-200');
+          overviewText.textContent = 'STREAM VIEW';
+        } else {
+          overviewBtn.classList.remove('bg-vermilion', 'border-vermilion', 'text-white');
+          overviewBtn.classList.add('bg-carbon-surface', 'border-carbon-border', 'text-neutral-200');
+          overviewText.textContent = 'VIEW ALL';
+        }
+        applyScale();
+      }
+
+      if (overviewBtn) {
+        overviewBtn.addEventListener('click', () => toggleOverview());
+      }
+
+      // Clicking any slide in Overview mode zooms in and scrolls to it
+      document.getElementById('deck-main').addEventListener('click', (e) => {
+        if (!isOverview) return;
+        const slideBox = e.target.closest('.slide-outer-box');
+        if (slideBox) {
+          toggleOverview(false);
+          setTimeout(() => {
+            slideBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 150);
+        }
+      });
+
       window.addEventListener('resize', () => {
-        if (currentMode === 'fit') applyScale();
+        if (currentMode === 'fit' || isOverview) applyScale();
       });
 
       if (zoomSelect) {
         zoomSelect.addEventListener('change', (e) => {
+          if (isOverview) toggleOverview(false);
           currentMode = e.target.value;
           applyScale();
         });
@@ -1042,6 +1112,162 @@
 
       // Initial scale on load
       applyScale();
+
+      return { applyScale, toggleOverview };
+    })();
+
+    // Add New Slide Controller
+    (function initAddSlideController() {
+      const addBtn = document.getElementById('addSlideBtn');
+      const deckMain = document.getElementById('deck-main');
+      const saveStatus = document.getElementById('saveStatus');
+
+      if (!addBtn || !deckMain) return;
+
+      addBtn.addEventListener('click', () => {
+        const existingSections = deckMain.querySelectorAll('section[id^="slide-"]');
+        const nextNum = existingSections.length + 1;
+        const numStr = nextNum < 10 ? '0' + nextNum : String(nextNum);
+        const newSlideId = `slide-${numStr}`;
+
+        const newSlideWrapper = document.createElement('div');
+        newSlideWrapper.className = 'slide-outer-box relative group';
+        newSlideWrapper.innerHTML = `
+          <div class="absolute -top-8 left-0 right-0 flex justify-between items-center text-xs font-mono text-neutral-400">
+            <span>FRAME ${numStr} // [ NEW STRATEGY SECTION ]</span>
+            <div class="flex items-center gap-3">
+              <button class="copy-slide-btn hover:text-vermilion underline" data-slide-id="${newSlideId}">COPY SLIDE HTML</button>
+              <button class="delete-slide-btn hover:text-red-400 text-neutral-500 font-mono text-xs underline" data-slide-id="${newSlideId}">DELETE SLIDE</button>
+            </div>
+          </div>
+
+          <section id="${newSlideId}" class="w-[1920px] h-[1080px] min-w-[1920px] min-h-[1080px] p-[80px] bg-carbon dark:bg-[#0D0D0E] border border-carbon-border bg-grid-pattern relative flex flex-col justify-between overflow-hidden shadow-2xl text-white box-border">
+            <!-- Crosshairs -->
+            <div class="absolute top-8 left-8 text-neutral-500 font-mono text-sm pointer-events-none">+</div>
+            <div class="absolute top-8 right-8 text-neutral-500 font-mono text-sm pointer-events-none">+</div>
+            <div class="absolute bottom-8 left-8 text-neutral-500 font-mono text-sm pointer-events-none">+</div>
+            <div class="absolute bottom-8 right-8 text-neutral-500 font-mono text-sm pointer-events-none">+</div>
+
+            <!-- Meta Bar -->
+            <div class="flex justify-between items-center pb-5 border-b border-carbon-border font-mono text-xs tracking-wider">
+              <div class="flex items-center gap-4">
+                <span class="text-vermilion font-bold">[ ${numStr}. NEW SECTION ]</span>
+                <span class="text-neutral-600">//</span>
+                <span class="text-neutral-400">STRATEGY SPECIFICATION & ARCHITECTURE</span>
+              </div>
+              <div class="flex items-center gap-4">
+                <span class="text-neutral-500">SPECIFICATION ADDENDUM</span>
+                <span class="px-2.5 py-1 bg-carbon-surface border border-carbon-border text-white font-bold">${numStr} / ${numStr}</span>
+              </div>
+            </div>
+
+            <!-- Headline -->
+            <div class="my-4">
+              <h2 class="text-5xl font-display font-extrabold tracking-tight text-white uppercase leading-tight">
+                New Strategy Section Headline
+              </h2>
+              <p class="text-lg text-neutral-400 mt-3 max-w-[1400px] leading-relaxed">
+                Click here in edit mode to detail operational requirements, bilateral institutional commitments, or budget allocation.
+              </p>
+            </div>
+
+            <!-- 3 Structural Cards -->
+            <div class="grid grid-cols-3 gap-8 flex-1 my-3">
+              <div class="border border-carbon-border bg-carbon-surface p-8 flex flex-col justify-between">
+                <div>
+                  <div class="font-mono text-xs font-bold text-vermilion mb-3 tracking-wider">[ OBJECTIVE 01 ]</div>
+                  <h3 class="text-2xl font-display font-bold text-white mb-2">First Milestone</h3>
+                  <div class="font-mono text-xs text-neutral-400 pb-3 border-b border-carbon-border">OPERATIONAL TARGET</div>
+                  <p class="text-sm text-neutral-400 mt-4 leading-relaxed">
+                    Detail the infrastructure deliverable, site scouting status, or bilateral academy agreement.
+                  </p>
+                </div>
+                <div class="font-mono text-4xl font-black text-neutral-700 text-right mt-6">01</div>
+              </div>
+
+              <div class="border border-carbon-border bg-carbon-surface p-8 flex flex-col justify-between">
+                <div>
+                  <div class="font-mono text-xs font-bold text-vermilion mb-3 tracking-wider">[ OBJECTIVE 02 ]</div>
+                  <h3 class="text-2xl font-display font-bold text-white mb-2">Second Milestone</h3>
+                  <div class="font-mono text-xs text-neutral-400 pb-3 border-b border-carbon-border">FABRICATION SPEC</div>
+                  <p class="text-sm text-neutral-400 mt-4 leading-relaxed">
+                    Specify workshop machinery pooling, fellowship stipend structures, or residency rotations.
+                  </p>
+                </div>
+                <div class="font-mono text-4xl font-black text-neutral-700 text-right mt-6">02</div>
+              </div>
+
+              <div class="border border-carbon-border bg-carbon-surface p-8 flex flex-col justify-between">
+                <div>
+                  <div class="font-mono text-xs font-bold text-vermilion mb-3 tracking-wider">[ OBJECTIVE 03 ]</div>
+                  <h3 class="text-2xl font-display font-bold text-white mb-2">Third Milestone</h3>
+                  <div class="font-mono text-xs text-neutral-400 pb-3 border-b border-carbon-border">ECONOMIC RETURN</div>
+                  <p class="text-sm text-neutral-400 mt-4 leading-relaxed">
+                    Outline sponsorship ROI, commercial activation, and cultural diplomacy milestones.
+                  </p>
+                </div>
+                <div class="font-mono text-4xl font-black text-neutral-700 text-right mt-6">03</div>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="flex justify-between items-center pt-5 border-t border-carbon-border font-mono text-xs text-neutral-500">
+              <div>CEMENTO ARCHITECTURE // SECTION ${numStr}</div>
+              <div>FORM FOLLOWS FUNCTION</div>
+              <div>ROME × SEOUL</div>
+            </div>
+          </section>
+        `;
+
+        deckMain.appendChild(newSlideWrapper);
+
+        // Re-scale new slide
+        zoomController.applyScale();
+
+        // Smooth scroll to newly created slide
+        setTimeout(() => {
+          newSlideWrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+
+        // Auto-save to localStorage
+        try {
+          localStorage.setItem('cemento_deck_edits_v1', deckMain.innerHTML);
+          if (saveStatus) {
+            saveStatus.textContent = `✓ SLIDE ${numStr} ADDED & SAVED`;
+            saveStatus.classList.remove('hidden');
+            setTimeout(() => {
+              saveStatus.textContent = '✓ AUTO-SAVED';
+              saveStatus.classList.add('hidden');
+            }, 3000);
+          }
+        } catch (err) {
+          console.error("Auto-save error on add slide:", err);
+        }
+      });
+
+      // Slide Deletion handler via event delegation
+      deckMain.addEventListener('click', (e) => {
+        const delBtn = e.target.closest('.delete-slide-btn');
+        if (!delBtn) return;
+        const slideId = delBtn.getAttribute('data-slide-id');
+        const slideBox = delBtn.closest('.slide-outer-box');
+        if (slideBox && confirm(`Are you sure you want to delete this slide (${slideId})?`)) {
+          slideBox.remove();
+          try {
+            localStorage.setItem('cemento_deck_edits_v1', deckMain.innerHTML);
+            if (saveStatus) {
+              saveStatus.textContent = '✓ SLIDE DELETED & SAVED';
+              saveStatus.classList.remove('hidden');
+              setTimeout(() => {
+                saveStatus.textContent = '✓ AUTO-SAVED';
+                saveStatus.classList.add('hidden');
+              }, 2500);
+            }
+          } catch (err) {
+            console.error(err);
+          }
+        }
+      });
     })();
 
     // Theme toggle
