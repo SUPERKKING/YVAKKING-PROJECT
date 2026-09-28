@@ -1,0 +1,1146 @@
+/* ==========================================================================
+   CEMENTO ROME × SEOUL — BAUHAUS / BRUTALIST PRESENTATION DECK SYSTEM
+   Design System & Swiss International Grid Architecture (1920x1080 16:9)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+  /* DARK THEME (CARBON DARK - DEFAULT) */
+  --bg-color: #0D0D0E;
+  --surface-color: #18181A;
+  --surface-alt: #131315;
+  --surface-hover: #222226;
+  --text-primary: #FFFFFF;
+  --text-secondary: #8C8C8C;
+  --text-tertiary: #525257;
+  --border-color: #2E2E32;
+  --border-hairline: rgba(255, 255, 255, 0.12);
+  --border-active: #FF3B14;
+  --accent-vermilion: #FF3B14;
+  --accent-dim: rgba(255, 59, 20, 0.12);
+  --grid-line: rgba(255, 255, 255, 0.04);
+  --mark-cross: rgba(255, 255, 255, 0.25);
+  --shadow-slide: 0 30px 80px rgba(0, 0, 0, 0.6);
+
+  /* TYPOGRAPHY TOKENS */
+  --font-display: 'Inter Tight', -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Space Mono', 'JetBrains Mono', ui-monospace, monospace;
+
+  /* SLIDE CANVAS METRICS */
+  --slide-width: 1920px;
+  --slide-height: 1080px;
+  --slide-padding: 80px;
+  --hairline: 0.75px;
+}
+
+/* LIGHT THEME (CONCRETE WHITE) */
+[data-theme="light"] {
+  --bg-color: #F4F4F1;
+  --surface-color: #ECECE8;
+  --surface-alt: #E3E3DE;
+  --surface-hover: #DFDFD9;
+  --text-primary: #111111;
+  --text-secondary: #666666;
+  --text-tertiary: #9E9E98;
+  --border-color: #DCDCDA;
+  --border-hairline: rgba(0, 0, 0, 0.12);
+  --border-active: #FF3B14;
+  --accent-vermilion: #FF3B14;
+  --accent-dim: rgba(255, 59, 20, 0.08);
+  --grid-line: rgba(0, 0, 0, 0.04);
+  --mark-cross: rgba(0, 0, 0, 0.25);
+  --shadow-slide: 0 20px 60px rgba(0, 0, 0, 0.08);
+}
+
+/* GLOBAL RESET & BASE */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-x: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* CONTROL HUD (TOP BAR) */
+.hud-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: rgba(13, 13, 14, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  z-index: 1000;
+}
+
+[data-theme="light"] .hud-header {
+  background: rgba(244, 244, 241, 0.88);
+}
+
+.hud-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.hud-logo {
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hud-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-vermilion);
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-vermilion);
+  padding: 2px 8px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.hud-status {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+}
+
+.hud-center {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hud-btn {
+  background: var(--surface-color);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 6px 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hud-btn:hover {
+  background: var(--surface-hover);
+  border-color: var(--text-primary);
+}
+
+.hud-btn.active {
+  background: var(--text-primary);
+  color: var(--bg-color);
+  border-color: var(--text-primary);
+}
+
+.hud-btn-accent {
+  background: var(--accent-vermilion);
+  color: #FFFFFF;
+  border-color: var(--accent-vermilion);
+}
+
+.hud-btn-accent:hover {
+  background: #E0310F;
+  border-color: #E0310F;
+}
+
+.hud-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* PRESENTATION VIEW CONTAINER */
+.viewport-wrapper {
+  margin-top: 60px;
+  padding: 40px 0 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+}
+
+/* DECK VIEW MODES */
+/* MODE 1: SCROLL ALL SLIDES */
+.deck-stream {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+  width: 100%;
+}
+
+/* MODE 2: SINGLE SLIDE / FIT SCREEN */
+body.mode-presenter {
+  overflow: hidden;
+}
+
+body.mode-presenter .hud-header {
+  opacity: 0.2;
+  transition: opacity 0.3s ease;
+}
+
+body.mode-presenter .hud-header:hover {
+  opacity: 1;
+}
+
+body.mode-presenter .viewport-wrapper {
+  margin-top: 0;
+  padding: 0;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+body.mode-presenter .deck-stream {
+  height: 100%;
+  justify-content: center;
+}
+
+body.mode-presenter .slide-frame {
+  display: none;
+}
+
+body.mode-presenter .slide-frame.current-active {
+  display: block;
+}
+
+/* SLIDE FRAME — 1920 x 1080 FIXED CANVAS */
+.slide-scaler {
+  transform-origin: top center;
+  transition: transform 0.2s ease-out;
+}
+
+.slide-frame {
+  width: 1920px;
+  height: 1080px;
+  min-width: 1920px;
+  min-height: 1080px;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-slide);
+  border: 1px solid var(--border-color);
+  padding: var(--slide-padding);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+/* BACKGROUND TECHNICAL WATERMARK & GRID */
+.slide-frame::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 160px 160px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ARCHITECTURAL CROSSHAIRS AT CORNERS */
+.crosshair {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.crosshair::before, .crosshair::after {
+  content: "";
+  position: absolute;
+  background: var(--mark-cross);
+}
+
+.crosshair::before {
+  top: 7px;
+  left: 0;
+  width: 16px;
+  height: 1px;
+}
+
+.crosshair::after {
+  top: 0;
+  left: 7px;
+  width: 1px;
+  height: 16px;
+}
+
+.crosshair.tl { top: 32px; left: 32px; }
+.crosshair.tr { top: 32px; right: 32px; }
+.crosshair.bl { bottom: 32px; left: 32px; }
+.crosshair.br { bottom: 32px; right: 32px; }
+
+/* SLIDE INNER WRAPPER (Z-INDEX 1) */
+.slide-content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* ==========================================================================
+   SLIDE HEADER / TOP ZONE
+   ========================================================================== */
+.slide-meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 36px;
+}
+
+.meta-group-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.meta-tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.meta-tag.accent {
+  color: var(--accent-vermilion);
+  font-weight: 700;
+}
+
+.meta-divider {
+  display: inline-block;
+  width: 1px;
+  height: 12px;
+  background: var(--border-color);
+}
+
+.meta-group-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.meta-slide-num {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  background: var(--surface-color);
+  padding: 4px 10px;
+  border: 1px solid var(--border-color);
+  letter-spacing: 0.1em;
+}
+
+/* ==========================================================================
+   SLIDE TITLE TYPOGRAPHY
+   ========================================================================== */
+.slide-title-block {
+  margin-bottom: 36px;
+}
+
+.slide-headline {
+  font-family: var(--font-display);
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  max-width: 1560px;
+  color: var(--text-primary);
+}
+
+.slide-subtitle-lead {
+  font-family: var(--font-body);
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin-top: 14px;
+  max-width: 1400px;
+  font-weight: 400;
+}
+
+/* ==========================================================================
+   SLIDE 01: COVER & MANIFESTO
+   ========================================================================== */
+.cover-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.cover-center {
+  margin-top: 40px;
+}
+
+.cover-giant-title {
+  font-family: var(--font-display);
+  font-size: 160px;
+  font-weight: 900;
+  line-height: 0.88;
+  letter-spacing: -0.06em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+}
+
+.cover-title-accent {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  background: var(--accent-vermilion);
+  margin-bottom: 12px;
+}
+
+.cover-subtitle {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-top: 32px;
+  max-width: 1280px;
+}
+
+.cover-keynote-box {
+  margin-top: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+}
+
+.cover-keynote-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-vermilion);
+  letter-spacing: 0.1em;
+}
+
+.cover-keynote-text {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.cover-bottom-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  margin-top: auto;
+}
+
+.cover-meta-col {
+  padding: 24px 28px;
+  border-right: 1px solid var(--border-color);
+}
+
+.cover-meta-col:last-child {
+  border-right: none;
+}
+
+.meta-col-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.meta-col-val {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--text-primary);
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   SLIDE 02: PROBLEM & SHIFT (ASYMMETRIC COMPARISON 2-COL)
+   ========================================================================== */
+.asym-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 40px;
+  flex: 1;
+}
+
+.status-column {
+  border: 1px solid var(--border-color);
+  background: var(--surface-alt);
+  display: flex;
+  flex-direction: column;
+}
+
+.status-column.highlight-solution {
+  background: var(--surface-color);
+  border-color: var(--border-color);
+  position: relative;
+}
+
+.status-column.highlight-solution::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--accent-vermilion);
+}
+
+.col-header-box {
+  padding: 24px 32px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.col-header-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.col-header-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 4px 8px;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+}
+
+.highlight-solution .col-header-badge {
+  border-color: var(--accent-vermilion);
+  color: var(--accent-vermilion);
+  background: var(--accent-dim);
+}
+
+.col-item-list {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1;
+}
+
+.compare-card {
+  padding: 20px 24px;
+  border: 1px solid var(--border-color);
+  background: var(--surface-color);
+}
+
+.highlight-solution .compare-card {
+  background: var(--surface-alt);
+  border-left: 3px solid var(--accent-vermilion);
+}
+
+.compare-card-metric {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent-vermilion);
+  margin-bottom: 8px;
+}
+
+.compare-card-detail {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   SLIDE 03: ROME ANCHOR (3-COLUMN STRUCTURAL CARDS)
+   ========================================================================== */
+.structural-cards-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  flex: 1;
+}
+
+.struct-card {
+  border: 1px solid var(--border-color);
+  background: var(--surface-color);
+  padding: 40px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+.struct-card-top {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.struct-card-tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-vermilion);
+  letter-spacing: 0.08em;
+}
+
+.struct-card-title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--text-primary);
+}
+
+.struct-card-spec {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 16px;
+  letter-spacing: 0.06em;
+}
+
+.struct-card-desc {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-top: 20px;
+}
+
+.struct-card-corner-index {
+  font-family: var(--font-mono);
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--border-color);
+  line-height: 1;
+  text-align: right;
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+/* ==========================================================================
+   SLIDE 04: SEOUL SATELLITE (QUADRANT SPLIT GRID)
+   ========================================================================== */
+.split-grid-quad {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 28px;
+  flex: 1;
+}
+
+.quad-card {
+  border: 1px solid var(--border-color);
+  background: var(--surface-color);
+  padding: 32px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+.quad-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+}
+
+.quad-code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-vermilion);
+  letter-spacing: 0.1em;
+}
+
+.quad-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  letter-spacing: 0.06em;
+}
+
+.quad-heading {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.quad-detail {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   SLIDE 05: STRATEGIC VALUE (DUAL TRACK SPLIT)
+   ========================================================================== */
+.dual-track-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  flex: 1;
+}
+
+.track-box {
+  border: 1px solid var(--border-color);
+  background: var(--surface-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.track-box-header {
+  padding: 24px 32px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--surface-alt);
+}
+
+.track-type-tag {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-vermilion);
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.track-scope {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+}
+
+.track-body {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+.track-deliverable {
+  padding: 16px 20px;
+  border: 1px solid var(--border-color);
+  background: var(--surface-color);
+}
+
+.deliverable-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.deliverable-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   SLIDE 06: GOVERNANCE & FINANCES (3-PILLAR MATRIX)
+   ========================================================================== */
+.governance-matrix {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  flex: 1;
+}
+
+.pillar-col {
+  border: 1px solid var(--border-color);
+  background: var(--surface-color);
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+}
+
+.pillar-number {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--accent-vermilion);
+  margin-bottom: 16px;
+}
+
+.pillar-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+}
+
+.pillar-summary {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  line-height: 1.25;
+}
+
+.pillar-desc {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   SLIDE 07: ROADMAP (HORIZONTAL MODULAR AXIS)
+   ========================================================================== */
+.timeline-axis-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  flex: 1;
+  position: relative;
+}
+
+.timeline-phase-card {
+  border: 1px solid var(--border-color);
+  background: var(--surface-color);
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.phase-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.phase-step {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-vermilion);
+  letter-spacing: 0.1em;
+}
+
+.phase-status {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 2px 8px;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+}
+
+.phase-status.ACTIVE {
+  border-color: var(--accent-vermilion);
+  color: var(--accent-vermilion);
+  background: var(--accent-dim);
+}
+
+.phase-period {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+
+.phase-milestone {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+  line-height: 1.25;
+}
+
+.phase-item-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: auto;
+}
+
+.phase-item-list li {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  position: relative;
+  padding-left: 20px;
+}
+
+.phase-item-list li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--accent-vermilion);
+  font-family: var(--font-mono);
+}
+
+/* ==========================================================================
+   SLIDE FOOTER ZONE
+   ========================================================================== */
+.slide-footer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-color);
+  margin-top: 36px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-center {
+  color: var(--text-tertiary);
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ==========================================================================
+   FIGMA EXPORT MODAL & DIALOGS
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 40px;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-box {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  width: 900px;
+  max-width: 95vw;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+}
+
+.modal-header {
+  padding: 20px 28px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.modal-close-btn:hover {
+  color: var(--accent-vermilion);
+}
+
+.modal-body {
+  padding: 24px 28px;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.modal-code-block {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  padding: 16px;
+  color: #38ef7d;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  overflow-x: auto;
+  max-height: 380px;
+  white-space: pre;
+}
+
+.modal-footer {
+  padding: 16px 28px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* ==========================================================================
+   PRINT / PDF EXPORT SPECIFICATION
+   ========================================================================== */
+@media print {
+  @page {
+    size: 1920px 1080px landscape;
+    margin: 0;
+  }
+
+  html, body {
+    background: #0D0D0E !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .hud-header, .modal-overlay {
+    display: none !important;
+  }
+
+  .viewport-wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    display: block !important;
+  }
+
+  .deck-stream {
+    gap: 0 !important;
+    display: block !important;
+  }
+
+  .slide-scaler {
+    transform: none !important;
+  }
+
+  .slide-frame {
+    page-break-after: always !important;
+    break-after: page !important;
+    box-shadow: none !important;
+    border: none !important;
+    width: 1920px !important;
+    height: 1080px !important;
+  }
+}
+
+/* ==========================================================================
+   LIVE TEXT EDITING STYLES
+   ========================================================================== */
+[contenteditable="true"] {
+  outline: none;
+  transition: outline 0.15s ease, background-color 0.15s ease;
+}
+
+[contenteditable="true"]:hover {
+  outline: 1px dashed rgba(255, 59, 20, 0.6) !important;
+  outline-offset: 4px;
+  cursor: text;
+}
+
+[contenteditable="true"]:focus {
+  outline: 1.5px solid #FF3B14 !important;
+  outline-offset: 4px;
+  background-color: rgba(255, 59, 20, 0.08) !important;
+}
+

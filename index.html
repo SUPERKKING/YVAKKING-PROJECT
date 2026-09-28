@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEMENTO : Rome × Seoul — Presentation Deck (1920x1080)</title>
+  <meta name="description" content="Automated Bauhaus-Brutalist presentation deck structure connectable with Figma (1920x1080px per frame) based on CEMENTO Seoul x Rome.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       TOP CONTROL HUD
+       ======================================================================== -->
+  <header class="hud-header">
+    <div class="hud-left">
+      <div class="hud-logo">
+        <span>CEMENTO</span>
+        <span class="hud-badge">ROME × SEOUL</span>
+      </div>
+      <div class="meta-divider"></div>
+      <span class="hud-status">[ CONFIDENTIAL STRATEGY 2026–2027 ]</span>
+    </div>
+
+    <div class="hud-center">
+      <button class="hud-btn" id="btn-prev" title="Previous Slide (←)">←</button>
+      <div class="meta-tag" id="slide-indicator">SLIDE 01 / 07</div>
+      <button class="hud-btn" id="btn-next" title="Next Slide (→)">→</button>
+      <div class="meta-divider"></div>
+      <button class="hud-btn active" id="btn-mode-stream">Stream View</button>
+      <button class="hud-btn" id="btn-mode-presenter">Presenter Mode</button>
+      <div class="meta-divider"></div>
+      <button class="hud-btn" id="btn-theme-toggle">Theme: Dark</button>
+      <div class="meta-divider"></div>
+      <button class="hud-btn" id="btn-edit-toggle" title="슬라이드의 모든 텍스트를 클릭해서 자유롭게 수정할 수 있습니다">
+        <span>✏️</span>
+        <span id="btn-edit-text">Edit Text: OFF</span>
+      </button>
+    </div>
+
+    <div class="hud-right">
+      <button class="hud-btn" id="btn-fit-screen">Fit Screen</button>
+      <button class="hud-btn" id="btn-print" title="Print to PDF (Cmd+P)">Print / PDF</button>
+      <button class="hud-btn hud-btn-accent" id="btn-open-figma">Export to Figma</button>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       SLIDE VIEWPORT CONTAINER
+       ======================================================================== -->
+  <main class="viewport-wrapper" id="viewport-wrapper">
+    <div class="deck-stream" id="deck-stream">
+
+      <!-- ====================================================================
+           SLIDE 01: COVER & MANIFESTO
+           ==================================================================== -->
+      <div class="slide-scaler" data-slide-index="1">
+        <section class="slide-frame current-active" id="slide-01">
+          <div class="crosshair tl"></div>
+          <div class="crosshair tr"></div>
+          <div class="crosshair bl"></div>
+          <div class="crosshair br"></div>
+
+          <div class="slide-content cover-content">
+            <!-- Top Metadata -->
+            <div class="slide-meta-bar">
+              <div class="meta-group-left">
+                <span class="meta-tag accent">[ CEMENTO : ROME × SEOUL ]</span>
+                <span class="meta-divider"></span>
+                <span class="meta-tag">[ CONFIDENTIAL STRATEGY PROPOSAL 2026-2027 ]</span>
+              </div>
+              <div class="meta-group-right">
+                <span class="meta-tag">ARCHIVAL REF // CMNT-2026-V1</span>
+                <span class="meta-slide-num">01 / 07</span>
+              </div>
+            </div>
+
+            <!-- Center Giant Title & Manifesto -->
+            <div class="cover-center">
+              <h1 class="cover-giant-title">
+                CEMENTO
+                <span class="cover-title-accent"></span>
+              </h1>
+              <h2 class="cover-subtitle">
+                Bridging International Academies & Seoul's Production Infrastructure
+              </h2>
+              
+              <div class="cover-keynote-box">
+                <span class="cover-keynote-label">CO-FOUNDERS //</span>
+                <span class="cover-keynote-text">Yvannoé Kruger (Ex-POUSH) × Kyeongnan Kim (CEO, D_RECTUS)</span>
+              </div>
+            </div>
+
+            <!-- Bottom Modular Metadata Columns -->
+            <div class="cover-bottom-grid">
+              <div class="cover-meta-col">
+                <div class="meta-col-label">[ DURATION & TENURE ]</div>
+                <div class="meta-col-val">2026 — 2047<br>[ 21-YEAR ANCHOR ]</div>
+              </div>
+              <div class="cover-meta-col">
+                <div class="meta-col-label">[ DUAL GEOGRAPHY ]</div>
+                <div class="meta-col-val">VIA CASILINA, PIGNETO (ROME)<br>× SEOUL SATELLITE HUB</div>
+              </div>
+              <div class="cover-meta-col">
+                <div class="meta-col-label">[ OPERATING MODEL ]</div>
+                <div class="meta-col-val">1:1 RECIPROCAL PRODUCTION<br>& BILATERAL ATELIER EXCHANGE</div>
+              </div>
+              <div class="cover-meta-col">
+                <div class="meta-col-label">[ CLASSIFICATION ]</div>
+                <div class="meta-col-val">PERMANENT INFRASTRUCTURE<br>SPECIFICATION SPEC.01</div>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="slide-footer-bar">
+              <div class="footer-left">
+                <span>© 2026 CEMENTO BILATERAL CONSORTIUM</span>
+                <span class="meta-divider"></span>
+                <span>ROME // SEOUL</span>
+              </div>
+              <div class="footer-center">FORM FOLLOWS INFRASTRUCTURE</div>
+              <div class="footer-right">
+                <span>COORD: 41.8902° N, 12.5284° E / 37.5665° N, 126.9780° E</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+
+      <!-- ====================================================================
+           SLIDE 02: PROBLEM & THE SHIFT (CONTEXT & STRUCTURAL NEED)
+           ==================================================================== -->
+      <div class="slide-scaler" data-slide-index="2">
+        <section class="slide-frame" id="slide-02">
+          <div class="crosshair tl"></div>
+          <div class="crosshair tr"></div>
+          <div class="crosshair bl"></div>
+          <div class="crosshair br"></div>
+
+          <div class="slide-content">
+            <!-- Meta Bar -->
+            <div class="slide-meta-bar">
+              <div class="meta-group-left">
+                <span class="meta-tag accent">[ 01. CONTEXT & STRUCTURAL NEED ]</span>
+                <span class="meta-divider"></span>
+                <span class="meta-tag">PARADIGM SHIFT // SYSTEM DEFICIT</span>
+              </div>
+              <div class="meta-group-right">
+                <span class="meta-tag">STRUCTURAL ANALYSIS</span>
+                <span class="meta-slide-num">02 / 07</span>
+              </div>
+            </div>
+
+            <!-- Title Block -->
+            <div class="slide-title-block">
+              <h2 class="slide-headline">Beyond the Ephemeral: From Temporary Fairs to Long-Term Infrastructure</h2>
+              <p class="slide-subtitle-lead">
+                The global contemporary art circuit remains trapped in fleeting commercial fairs and short-term pop-ups. Asian creative practitioners in Europe face insurmountable fabrication costs and zero institutional continuity.
+              </p>
+            </div>
+
+            <!-- 2-Column Asymmetric Grid -->
+            <div class="asym-grid-2col">
+              <!-- Left Column: The Status Quo -->
+              <div class="status-column">
+                <div class="col-header-box">
+                  <div class="col-header-title">The Status Quo</div>
+                  <div class="col-header-badge">[ SYSTEMIC BOTTLENECK ]</div>
+                </div>
+                <div class="col-item-list">
+                  <div class="compare-card">
+                    <div class="compare-card-metric">DEFICIT 01 // EPHEMERAL FAIR CIRCUIT</div>
+                    <div class="compare-card-detail">
+                      Art fairs (Frieze, Basel) generate intense 5-day sales bursts without establishing sustainable production roots, leaving artists transient and dependent on foreign logistics.
+                    </div>
+                  </div>
+                  <div class="compare-card">
+                    <div class="compare-card-metric">DEFICIT 02 // PROHIBITIVE FABRICATION COSTS</div>
+                    <div class="compare-card-detail">
+                      Skyrocketing European studio rents and atelier machinery shortages force Asian creators to compromise on scale, limiting their work to transportable small mediums.
+                    </div>
+                  </div>
+                  <div class="compare-card">
+                    <div class="compare-card-metric">DEFICIT 03 // ACADEMY ISOLATION</div>
+                    <div class="compare-card-detail">
+                      Centuries-old European cultural academies operate as fortified enclaves, largely inaccessible to Asian diaspora practitioners without structural bilateral treaties.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column: The CEMENTO Solution -->
+              <div class="status-column highlight-solution">
+                <div class="col-header-box">
+                  <div class="col-header-title">The CEMENTO Solution</div>
+                  <div class="col-header-badge">[ PERMANENT FOUNDATION ]</div>
+                </div>
+                <div class="col-item-list">
+                  <div class="compare-card">
+                    <div class="compare-card-metric">PILLAR 01 // 21-YEAR PERMANENT ANCHOR</div>
+                    <div class="compare-card-detail">
+                      Secured industrial site tenure in Rome (Via Casilina, Pigneto) creating a continuous, multi-decade European bridgehead for Asian cultural production.
+                    </div>
+                  </div>
+                  <div class="compare-card">
+                    <div class="compare-card-metric">PILLAR 02 // COMMUNITY MACHINE HALL</div>
+                    <div class="compare-card-detail">
+                      A 1,000+ sqm shared industrial fabrication hall equipped for monumental steel, timber, casting, robotics, and 3D printing — removing the cost barrier to epic scale.
+                    </div>
+                  </div>
+                  <div class="compare-card">
+                    <div class="compare-card-metric">PILLAR 03 // DIRECT ACADEMY INTERACTION</div>
+                    <div class="compare-card-detail">
+                      A reciprocal diplomatic corridor interfacing directly with Villa Médicis, Villa Massimo, Circolo Scandinavo, and the American Academy in Rome.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="slide-footer-bar">
+              <div class="footer-left">
+                <span>CEMENTO ARCHITECTURE</span>
+                <span class="meta-divider"></span>
+                <span>SECTION 01: STRUCTURAL ANALYSIS</span>
+              </div>
+              <div class="footer-center">INFRASTRUCTURE OVER EPHEMERALITY</div>
+              <div class="footer-right">
+                <span>ROME // SEOUL</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+
+      <!-- ====================================================================
+           SLIDE 03: ROME ANCHOR: THE CEMENTO SPECIFICATION
+           ==================================================================== -->
+      <div class="slide-scaler" data-slide-index="3">
+        <section class="slide-frame" id="slide-03">
+          <div class="crosshair tl"></div>
+          <div class="crosshair tr"></div>
+          <div class="crosshair bl"></div>
+          <div class="crosshair br"></div>
+
+          <div class="slide-content">
+            <!-- Meta Bar -->
+            <div class="slide-meta-bar">
+              <div class="meta-group-left">
+                <span class="meta-tag accent">[ 02. ROME HUB : VIA CASILINA ]</span>
+                <span class="meta-divider"></span>
+                <span class="meta-tag">INDUSTRIAL ARCHITECTURE SPECIFICATION</span>
+              </div>
+              <div class="meta-group-right">
+                <span class="meta-tag">SITE BLUEPRINT // PIGNETO</span>
+                <span class="meta-slide-num">03 / 07</span>
+              </div>
+            </div>
+
+            <!-- Title Block -->
+            <div class="slide-title-block">
+              <h2 class="slide-headline">The Machine Hall & The Integrated Community</h2>
+              <p class="slide-subtitle-lead">
+                Repurposing Rome's twentieth-century industrial heritage into a monumental production machine and cross-continental residency campus.
+              </p>
+            </div>
+
+            <!-- 3-Column Structural Cards -->
+            <div class="structural-cards-3col">
+              <!-- Card 1 -->
+              <div class="struct-card">
+                <div class="struct-card-top">
+                  <div class="struct-card-tag">[ 21-YEAR INDUSTRIAL ANCHOR ]</div>
+                  <h3 class="struct-card-title">Former Lancia / Fiat Site</h3>
+                  <div class="struct-card-spec">1,000+ SQM RAW STRUCTURAL SCALE // PIGNETO</div>
+                  <p class="struct-card-desc">
+                    Long-term anchor tenure secured within Rome's historic creative quarter of Pigneto. Raw concrete spans, high-clearance overhead gantry cranes, and north-facing sawtooth clerestory illumination designed specifically for unconstrained physical scale and monumental spatial interventions.
+                  </p>
+                </div>
+                <div class="struct-card-corner-index">01</div>
+              </div>
+
+              <!-- Card 2 -->
+              <div class="struct-card">
+                <div class="struct-card-top">
+                  <div class="struct-card-tag">[ THE MACHINE HALL ]</div>
+                  <h3 class="struct-card-title">Community-Scale Production</h3>
+                  <div class="struct-card-spec">HEAVY FABRICATION & DIGITAL LABS</div>
+                  <p class="struct-card-desc">
+                    Comprehensive shared workshops equipped with industrial CNC 5-axis milling, robotic TIG/MIG welding, heavy-duty timber joinery, large-volume ceramic and resin casting bays, and industrial-grade 3D additive printing stations operated under a shared resource-pooling governance model.
+                  </p>
+                </div>
+                <div class="struct-card-corner-index">02</div>
+              </div>
+
+              <!-- Card 3 -->
+              <div class="struct-card">
+                <div class="struct-card-top">
+                  <div class="struct-card-tag">[ GLOBAL ACADEMY HUB ]</div>
+                  <h3 class="struct-card-title">Diplomatic Constellation</h3>
+                  <div class="struct-card-spec">DIRECT FELLOWSHIP INTEGRATION</div>
+                  <p class="struct-card-desc">
+                    Direct workspace and curatorial integration with Rome’s world-renowned national cultural academies: Académie de France à Rome (Villa Médicis), Circolo Scandinavo, Deutsche Akademie Rom (Villa Massimo), and the American Academy in Rome — establishing continuous inter-institutional fellowship exchange.
+                  </p>
+                </div>
+                <div class="struct-card-corner-index">03</div>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="slide-footer-bar">
+              <div class="footer-left">
+                <span>SITE: VIA CASILINA 44, PIGNETO, ROMA</span>
+                <span class="meta-divider"></span>
+                <span>STATUS: SECURED ANCHOR</span>
+              </div>
+              <div class="footer-center">POUSH METHODOLOGY // ADAPTIVE INDUSTRIAL REUSE</div>
+              <div class="footer-right">
+                <span>SCALE: 1,000+ SQM FLOOR AREA</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+
+      <!-- ====================================================================
+           SLIDE 04: SEOUL SATELLITE: URBAN REGENERATION
+           ==================================================================== -->
+      <div class="slide-scaler" data-slide-index="4">
+        <section class="slide-frame" id="slide-04">
+          <div class="crosshair tl"></div>
+          <div class="crosshair tr"></div>
+          <div class="crosshair bl"></div>
+          <div class="crosshair br"></div>
+
+          <div class="slide-content">
+            <!-- Meta Bar -->
+            <div class="slide-meta-bar">
+              <div class="meta-group-left">
+                <span class="meta-tag accent">[ 03. SEOUL SATELLITE HUB ]</span>
+                <span class="meta-divider"></span>
+                <span class="meta-tag">URBAN INFRASTRUCTURE REGENERATION</span>
+              </div>
+              <div class="meta-group-right">
+                <span class="meta-tag">SEOUL ARCHIVAL SPECIFICATION</span>
+                <span class="meta-slide-num">04 / 07</span>
+              </div>
+            </div>
+
+            <!-- Title Block -->
+            <div class="slide-title-block">
+              <h2 class="slide-headline">Not Just Another Residency. A Self-Sustaining Atelier of Freedom.</h2>
+              <p class="slide-subtitle-lead">
+                A hybrid public-private venue built on industrial or transport idle land (KORAIL/KTX properties or municipal assets), transposing brutalist production freedom into the core of Seoul.
+              </p>
+            </div>
+
+            <!-- Quadrant Split Grid -->
+            <div class="split-grid-quad">
+              <!-- Quad 1 -->
+              <div class="quad-card">
+                <div class="quad-top">
+                  <span class="quad-code">SPEC.01</span>
+                  <span class="quad-label">[ FELLOWSHIP PARITY ]</span>
+                </div>
+                <div>
+                  <h3 class="quad-heading">50% Korean / 50% International Fellows</h3>
+                  <p class="quad-detail">
+                    A strictly balanced cohort structure ensuring intense, daily peer friction between premier Korean creators and international fellows sent from Rome's top European academies.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Quad 2 -->
+              <div class="quad-card">
+                <div class="quad-top">
+                  <span class="quad-code">SPEC.02</span>
+                  <span class="quad-label">[ TEMPORAL FREEDOM ]</span>
+                </div>
+                <div>
+                  <h3 class="quad-heading">24/7 Sovereign Atelier Access</h3>
+                  <p class="quad-detail">
+                    Round-the-clock studio access liberated from municipal office-hour constraints. Unrestricted industrial fabrication schedules engineered for high-intensity physical and digital creation.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Quad 3 -->
+              <div class="quad-card">
+                <div class="quad-top">
+                  <span class="quad-code">SPEC.03</span>
+                  <span class="quad-label">[ ASSET ACTIVATION ]</span>
+                </div>
+                <div>
+                  <h3 class="quad-heading">Transport Brownfield Repurposing</h3>
+                  <p class="quad-detail">
+                    Activating idle rail land, logistics parcels, or industrial substations into a vibrant cultural landmark, turning neglected municipal burdens into high-density international assets.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Quad 4 -->
+              <div class="quad-card">
+                <div class="quad-top">
+                  <span class="quad-code">SPEC.04</span>
+                  <span class="quad-label">[ ECONOMIC CIRCULARITY ]</span>
+                </div>
+                <div>
+                  <h3 class="quad-heading">Self-Sustaining F&B & Fashion Events</h3>
+                  <p class="quad-detail">
+                    Commercial culinary concepts, architectural design retail, and premium brand showroom rentals generate predictable operational cash flow, directly subsidizing artist studio grants.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="slide-footer-bar">
+              <div class="footer-left">
+                <span>OPERATING MODEL: HYBRID PUBLIC-PRIVATE PARTNERSHIP</span>
+                <span class="meta-divider"></span>
+                <span>PARTNER: D_RECTUS PRODUCTION ENGINE</span>
+              </div>
+              <div class="footer-center">AUTONOMY // PRODUCTION // SUSTAINABILITY</div>
+              <div class="footer-right">
+                <span>TARGET SITES: KORAIL IDLE DEPOTS / MUNICIPAL BROWNFIELDS</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+
+      <!-- ====================================================================
+           SLIDE 05: STRATEGIC IMPACT: PUBLIC VALUE & CSR ROI
+           ==================================================================== -->
+      <div class="slide-scaler" data-slide-index="5">
+        <section class="slide-frame" id="slide-05">
+          <div class="crosshair tl"></div>
+          <div class="crosshair tr"></div>
+          <div class="crosshair bl"></div>
+          <div class="crosshair br"></div>
+
+          <div class="slide-content">
+            <!-- Meta Bar -->
+            <div class="slide-meta-bar">
+              <div class="meta-group-left">
+                <span class="meta-tag accent">[ 04. STRATEGIC VALUE & SPONSORSHIP ]</span>
+                <span class="meta-divider"></span>
+                <span class="meta-tag">DUAL-TRACK ROI & PARTNERSHIP VALUE MATRIX</span>
+              </div>
+              <div class="meta-group-right">
+                <span class="meta-tag">STAKEHOLDER SYNERGY</span>
+                <span class="meta-slide-num">05 / 07</span>
+              </div>
+            </div>
+
+            <!-- Title Block -->
+            <div class="slide-title-block">
+              <h2 class="slide-headline">Value Proposition for Public Institutions & Corporate Partners</h2>
+              <p class="slide-subtitle-lead">
+                A dual-engine sponsorship framework delivering national diplomatic sovereignty for government bodies and tangible placemaking capital for private conglomerates.
+              </p>
+            </div>
+
+            <!-- Split Layout Dual Track -->
+            <div class="dual-track-container">
+              <!-- Track A: Public -->
+              <div class="track-box">
+                <div class="track-box-header">
+                  <div class="track-type-tag">TRACK 01 // PUBLIC & DIPLOMATIC CORPS</div>
+                  <div class="track-scope">TARGET: MCST, ARKO, KAMS, ITALIAN EMBASSY, EUNIC CONSORTIUM</div>
+                </div>
+                <div class="track-body">
+                  <div class="track-deliverable">
+                    <div class="deliverable-title">Permanent Footprint in Rome's Elite Academy Circuit</div>
+                    <div class="deliverable-text">
+                      Establishes Korea’s first sovereign year-round institutional foothold inside Rome’s closed academy constellation, standing shoulder-to-shoulder with France, Germany, and the United States.
+                    </div>
+                  </div>
+                  <div class="track-deliverable">
+                    <div class="deliverable-title">Bilateral Sovereign Diplomatic Exchange</div>
+                    <div class="deliverable-text">
+                      Enables official state cultural diplomacy through direct artist deployment, high-profile symposia, and bilateral research publications with zero bureaucratic overhead.
+                    </div>
+                  </div>
+                  <div class="track-deliverable">
+                    <div class="deliverable-title">4× Public Fund Efficiency Multiplier</div>
+                    <div class="deliverable-text">
+                      By anchoring in an existing 21-year industrial tenure, public grant dollars directly empower creators with heavy tools rather than vanishing into commercial booth rent.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Track B: Private -->
+              <div class="track-box">
+                <div class="track-box-header">
+                  <div class="track-type-tag">TRACK 02 // PRIVATE CORPORATE & ESG PATRONAGE</div>
+                  <div class="track-scope">TARGET: REAL ESTATE PLACEMAKERS, MOBILITY, FASHION CONGLOMERATES</div>
+                </div>
+                <div class="track-body">
+                  <div class="track-deliverable">
+                    <div class="deliverable-title">Transformational Urban Placemaking</div>
+                    <div class="deliverable-text">
+                      Converts low-yield industrial or transit land into high-density cultural flagships, driving foot traffic, neighborhood valuation, and civic admiration.
+                    </div>
+                  </div>
+                  <div class="track-deliverable">
+                    <div class="deliverable-title">High-Authenticity ESG Cultural Capital</div>
+                    <div class="deliverable-text">
+                      Direct association with architectural preservation and next-generation international creative production, providing defensible, authentic ESG narratives.
+                    </div>
+                  </div>
+                  <div class="track-deliverable">
+                    <div class="deliverable-title">Exclusive Commercial & Event Synergy</div>
+                    <div class="deliverable-text">
+                      Guaranteed venue priority for flagship product launches, Milan/Rome/Seoul design week activations, automotive showcases, and VIP collector previews.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="slide-footer-bar">
+              <div class="footer-left">
+                <span>DIPLOMATIC & ECONOMIC ALIGNMENT</span>
+                <span class="meta-divider"></span>
+                <span>METRICS: CIVIC ROI + REAL ESTATE CAPITALIZATION</span>
+              </div>
+              <div class="footer-center">SYMMETRIC VALUE CREATION</div>
+              <div class="footer-right">
+                <span>CEMENTO PARTNERSHIP FRAMEWORK 2026-2027</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+
+      <!-- ====================================================================
+           SLIDE 06: GOVERNANCE & 1:1 RECIPROCAL MODEL
+           ==================================================================== -->
+      <div class="slide-scaler" data-slide-index="6">
+        <section class="slide-frame" id="slide-06">
+          <div class="crosshair tl"></div>
+          <div class="crosshair tr"></div>
+          <div class="crosshair bl"></div>
+          <div class="crosshair br"></div>
+
+          <div class="slide-content">
+            <!-- Meta Bar -->
+            <div class="slide-meta-bar">
+              <div class="meta-group-left">
+                <span class="meta-tag accent">[ 05. OPERATIONAL FRAMEWORK & FINANCES ]</span>
+                <span class="meta-divider"></span>
+                <span class="meta-tag">1:1 RECIPROCAL MODEL & CURATORIAL CHARTER</span>
+              </div>
+              <div class="meta-group-right">
+                <span class="meta-tag">BILATERAL AGREEMENT</span>
+                <span class="meta-slide-num">06 / 07</span>
+              </div>
+            </div>
+
+            <!-- Title Block -->
+            <div class="slide-title-block">
+              <h2 class="slide-headline">Equitable In-Kind Structure & Curatorial Autonomy</h2>
+              <p class="slide-subtitle-lead">
+                An elegant financial model eliminating cross-border cash friction through mirror in-kind resource provisioning, backed by strict co-curatorial sovereignty.
+              </p>
+            </div>
+
+            <!-- 3-Pillar Governance Matrix -->
+            <div class="governance-matrix">
+              <!-- Pillar 1 -->
+              <div class="pillar-col">
+                <div class="pillar-number">01</div>
+                <div class="pillar-label">[ LOCAL HOST PRINCIPLE ]</div>
+                <h3 class="pillar-summary">Symmetric In-Kind Provisioning</h3>
+                <p class="pillar-desc">
+                  No currency flows between cities. The Seoul satellite provides residency housing, production space, industrial machinery access, and PR for incoming European fellows. In mirror symmetry, CEMENTO Rome provides identical studio spaces, machinery access, and academy networking for Korean cohorts.
+                </p>
+              </div>
+
+              <!-- Pillar 2 -->
+              <div class="pillar-col">
+                <div class="pillar-number">02</div>
+                <div class="pillar-label">[ TRAVEL & LOGISTICS ]</div>
+                <h3 class="pillar-summary">Sending-Nation Grant Funding</h3>
+                <p class="pillar-desc">
+                  International airfare, material allowances, and creator stipends are secured directly through sending nations' public institutions (e.g., ARKO, KAMS, Institut Français, EUNIC grants). This completely isolates the operating hubs from speculative travel liabilities.
+                </p>
+              </div>
+
+              <!-- Pillar 3 -->
+              <div class="pillar-col">
+                <div class="pillar-number">03</div>
+                <div class="pillar-label">[ GOVERNANCE CHARTER ]</div>
+                <h3 class="pillar-summary">Equal Curatorial Sovereignty</h3>
+                <p class="pillar-desc">
+                  Bilateral independence with mandatory co-crediting. Yvannoé Kruger (Rome anchor, European networks) and Kyeongnan Kim (Seoul satellite, production leadership) maintain joint oversight with autonomous selection committees ensuring uncompromising artistic standards.
+                </p>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="slide-footer-bar">
+              <div class="footer-left">
+                <span>CHARTER: D_RECTUS × YVANNOÉ KRUGER BILATERAL PACT</span>
+                <span class="meta-divider"></span>
+                <span>ZERO CURRENCY CROSS-EXCHANGE</span>
+              </div>
+              <div class="footer-center">IN-KIND PARITY // BILATERAL CURATORIAL INTEGRITY</div>
+              <div class="footer-right">
+                <span>LEGAL STATUS: PRE-LOI DRAFTING PHASE</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+
+      <!-- ====================================================================
+           SLIDE 07: ROADMAP & STRATEGIC MILESTONES
+           ==================================================================== -->
+      <div class="slide-scaler" data-slide-index="7">
+        <section class="slide-frame" id="slide-07">
+          <div class="crosshair tl"></div>
+          <div class="crosshair tr"></div>
+          <div class="crosshair bl"></div>
+          <div class="crosshair br"></div>
+
+          <div class="slide-content">
+            <!-- Meta Bar -->
+            <div class="slide-meta-bar">
+              <div class="meta-group-left">
+                <span class="meta-tag accent">[ 06. EXECUTION TIMELINE ]</span>
+                <span class="meta-divider"></span>
+                <span class="meta-tag">STRATEGIC MILESTONES // 2026 — 2027</span>
+              </div>
+              <div class="meta-group-right">
+                <span class="meta-tag">PHASED DEPLOYMENT</span>
+                <span class="meta-slide-num">07 / 07</span>
+              </div>
+            </div>
+
+            <!-- Title Block -->
+            <div class="slide-title-block">
+              <h2 class="slide-headline">Phased Execution (2026 — 2027)</h2>
+              <p class="slide-subtitle-lead">
+                A disciplined, milestone-gated deployment calendar synchronizing European architectural fit-out with Seoul site acquisition and diplomatic fellowship alignment.
+              </p>
+            </div>
+
+            <!-- Horizontal Modular Axis -->
+            <div class="timeline-axis-grid">
+              <!-- Phase 1 -->
+              <div class="timeline-phase-card">
+                <div class="phase-top-bar">
+                  <span class="phase-step">PHASE 01</span>
+                  <span class="phase-status ACTIVE">ACTIVE</span>
+                </div>
+                <div class="phase-period">Q3 — Q4 2026</div>
+                <h3 class="phase-milestone">Formalization & Site Scouting</h3>
+                <ul class="phase-item-list">
+                  <li>Formal execution of bilateral LOI between D_RECTUS and Yvannoé Kruger.</li>
+                  <li>Structural surveying & Machine Hall machinery fit-out at Via Casilina, Rome.</li>
+                  <li>Identification of public fellowship grant channels (ARKO, KAMS, MCST, EUNIC).</li>
+                  <li>Scouting & MOU negotiations for Seoul transport/industrial idle parcels.</li>
+                </ul>
+              </div>
+
+              <!-- Phase 2 -->
+              <div class="timeline-phase-card">
+                <div class="phase-top-bar">
+                  <span class="phase-step">PHASE 02</span>
+                  <span class="phase-status">SCHEDULED</span>
+                </div>
+                <div class="phase-period">MARCH 2027</div>
+                <h3 class="phase-milestone">Rome Opening & Cohort 01</h3>
+                <ul class="phase-item-list">
+                  <li>Grand opening of CEMENTO Rome Machine Hall during Rome Art Week.</li>
+                  <li>Deployment of 1st Korean artist cohort (6 fellows) into Rome residency.</li>
+                  <li>Inaugural academy symposium with Villa Médicis, Villa Massimo, and Circolo Scandinavo.</li>
+                  <li>Securing municipal/railway lease concession for CEMENTO Seoul Hub.</li>
+                </ul>
+              </div>
+
+              <!-- Phase 3 -->
+              <div class="timeline-phase-card">
+                <div class="phase-top-bar">
+                  <span class="phase-step">PHASE 03</span>
+                  <span class="phase-status">PROJECTED</span>
+                </div>
+                <div class="phase-period">LATE 2027</div>
+                <h3 class="phase-milestone">Seoul Launch & Reciprocity</h3>
+                <ul class="phase-item-list">
+                  <li>Grand launch of CEMENTO Seoul Satellite Hub with incoming European fellows.</li>
+                  <li>Activation of public-facing fabrication workshops and design labs.</li>
+                  <li>Opening of dual-city simultaneous exhibition in Rome and Seoul.</li>
+                  <li>Commercial F&B and brand event activation yielding sustainable self-funding.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="slide-footer-bar">
+              <div class="footer-left">
+                <span>TARGET INAUGURATION: MARCH 2027 (ROMA) // LATE 2027 (SEOUL)</span>
+                <span class="meta-divider"></span>
+                <span>STATUS: ON TRACK</span>
+              </div>
+              <div class="footer-center">STEP-FUNCTION SCALING // SUSTAINABLE HORIZON</div>
+              <div class="footer-right">
+                <span>PROJECT LEAD: D_RECTUS × KRUGER</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ========================================================================
+       FIGMA EXPORT MODAL
+       ======================================================================== -->
+  <div class="modal-overlay" id="figma-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title">[ FIGMA CONNECTOR // AUTOMATED DECK GENERATION ]</div>
+        <button class="modal-close-btn" id="modal-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 12px; color: var(--text-primary); font-weight: bold;">
+          HOW TO CONNECT THIS DECK DIRECTLY TO FIGMA (1920×1080px PER FRAME):
+        </p>
+        <p style="margin-bottom: 16px;">
+          Option 1: In Figma, open <b>Plugins → Scripter</b> or the Developer Console (Cmd+Option+I), paste the automated script below, and hit <b>Run</b>. It creates all 7 frames with exact 80px margins, Swiss typographic hierarchy, and AutoLayout containers.<br>
+          Option 2: Copy the structured JSON payload to integrate with the Figma REST API or your custom plugin.
+        </p>
+
+        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+          <button class="hud-btn active" id="tab-btn-script">Figma Script (1-Click Run)</button>
+          <button class="hud-btn" id="tab-btn-json">JSON Schema</button>
+        </div>
+
+        <pre class="modal-code-block" id="modal-code-display"></pre>
+      </div>
+      <div class="modal-footer">
+        <span id="copy-status" style="margin-right: auto; font-family: var(--font-mono); color: var(--accent-vermilion); display: none;">COPIED TO CLIPBOARD!</span>
+        <button class="hud-btn" id="btn-copy-code">Copy to Clipboard</button>
+        <button class="hud-btn hud-btn-accent" id="btn-download-json">Download JSON</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       SECURITY ACCESS GATE (PASSWORD: SEOULCEMENTO)
+       ======================================================================== -->
+  <div id="security-gate" style="position: fixed; inset: 0; z-index: 99999; background: #0D0D0E; display: flex; align-items: center; justify-content: center; padding: 24px;">
+    <div style="width: 100%; max-width: 440px; padding: 32px; border: 1px solid var(--border-color); background: var(--surface-color); box-shadow: 0 40px 100px rgba(0,0,0,0.8); display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); font-family: var(--font-mono); font-size: 11px;">
+        <span style="color: var(--accent-vermilion); font-weight: bold; letter-spacing: 0.1em;">[ ACCESS GATE ]</span>
+        <span style="color: var(--text-secondary);">RESTRICTED // 2026</span>
+      </div>
+      <div>
+        <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px;">
+          <span style="font-family: var(--font-display); font-weight: 900; font-size: 28px; letter-spacing: 0.05em; color: var(--text-primary);">CEMENTO</span>
+          <div style="width: 10px; height: 10px; background: var(--accent-vermilion);"></div>
+        </div>
+        <p style="font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);">ROME × SEOUL STRATEGY PROPOSAL</p>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">보안을 위해 발급된 접근 키를 입력해 주십시오.</p>
+      </div>
+
+      <form id="auth-form" style="display: flex; flex-direction: column; gap: 16px;">
+        <div>
+          <label for="auth-input" style="display: block; font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">
+            ACCESS KEY [ PASSWORD ]
+          </label>
+          <input 
+            type="password" 
+            id="auth-input" 
+            placeholder="SEOULCEMENTO"
+            autocomplete="off"
+            autofocus
+            style="width: 100%; box-sizing: border-box; padding: 12px 16px; background: #0D0D0E; border: 1px solid var(--border-color); color: #FFF; font-family: var(--font-mono); font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; outline: none;"
+          />
+          <div id="auth-error" style="display: none; font-family: var(--font-mono); font-size: 11px; color: var(--accent-vermilion); margin-top: 8px; letter-spacing: 0.05em; line-height: 1.5;">
+            [ ACCESS DENIED // INVALID PASSWORD ]<br>[ 접근 불가 // 잘못된 비밀번호입니다 ]
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          style="width: 100%; padding: 12px; background: var(--accent-vermilion); border: 1px solid var(--accent-vermilion); color: #FFF; font-family: var(--font-mono); font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer;"
+        >
+          AUTHENTICATE [ ENTER ] →
+        </button>
+      </form>
+
+      <div style="padding-top: 12px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 10px; color: var(--text-tertiary);">
+        <span>SECURITY PROTOCOL V1.0</span>
+        <span>CONFIDENTIAL</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const gate = document.getElementById('security-gate');
+      const form = document.getElementById('auth-form');
+      const input = document.getElementById('auth-input');
+      const error = document.getElementById('auth-error');
+
+      if (sessionStorage.getItem('cemento_auth') === 'granted') {
+        gate.style.display = 'none';
+        return;
+      }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const enteredVal = input.value.trim().toUpperCase();
+        if (enteredVal === 'SEOULCEMENTO') {
+          sessionStorage.setItem('cemento_auth', 'granted');
+          gate.style.opacity = '0';
+          gate.style.transition = 'opacity 0.25s ease-out';
+          setTimeout(() => {
+            gate.style.display = 'none';
+          }, 250);
+        } else {
+          error.style.display = 'block';
+          input.style.borderColor = 'var(--accent-vermilion)';
+          input.value = '';
+          input.focus();
+        }
+      });
+    })();
+
+    // Live Text Editing Logic for index.html
+    (function() {
+      const editBtn = document.getElementById('btn-edit-toggle');
+      const editText = document.getElementById('btn-edit-text');
+      let isEditing = false;
+
+      const editableSelectors = '.slide-headline, .slide-subtitle-lead, .cover-giant-title, .cover-subtitle, .cover-keynote-text, .meta-col-val, .col-header-title, .compare-card-metric, .compare-card-detail, .struct-card-title, .struct-card-spec, .struct-card-desc, .quad-heading, .quad-detail, .deliverable-title, .deliverable-text, .pillar-summary, .pillar-desc, .phase-milestone, .phase-item-list li, .phase-period';
+      const slides = document.querySelectorAll('.slide-frame');
+
+      function setEditMode(enable) {
+        isEditing = enable;
+        slides.forEach(slide => {
+          const elements = slide.querySelectorAll(editableSelectors);
+          elements.forEach(el => {
+            if (enable) {
+              el.setAttribute('contenteditable', 'true');
+              el.setAttribute('spellcheck', 'false');
+            } else {
+              el.removeAttribute('contenteditable');
+            }
+          });
+        });
+
+        if (isEditing) {
+          editBtn.classList.add('hud-btn-accent');
+          editText.textContent = 'Edit Text: ON';
+        } else {
+          editBtn.classList.remove('hud-btn-accent');
+          editText.textContent = 'Edit Text: OFF';
+        }
+      }
+
+      if (editBtn) {
+        editBtn.addEventListener('click', () => {
+          setEditMode(!isEditing);
+        });
+      }
+    })();
+  </script>
+
+  <script src="script.js"></script>
+</body>
+</html>

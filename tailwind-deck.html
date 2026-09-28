@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="ko" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEMENTO : Rome × Seoul — Tailwind CSS HTML-to-Figma Ready Deck</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Inter:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            carbon: {
+              DEFAULT: '#0D0D0E',
+              surface: '#18181A',
+              alt: '#141416',
+              border: '#2E2E32',
+              hover: '#222226'
+            },
+            concrete: {
+              DEFAULT: '#F4F4F1',
+              surface: '#ECECE8',
+              alt: '#E5E5DF',
+              border: '#DCDCDA',
+              hover: '#DFDFD9'
+            },
+            vermilion: {
+              DEFAULT: '#FF3B14',
+              dim: 'rgba(255, 59, 20, 0.12)',
+              hover: '#E0310F'
+            }
+          },
+          fontFamily: {
+            display: ['"Inter Tight"', 'sans-serif'],
+            body: ['Inter', 'sans-serif'],
+            mono: ['"Space Mono"', 'monospace']
+          },
+          spacing: {
+            '80px': '80px',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Technical Grid Overlay */
+    .bg-grid-pattern {
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 160px 160px;
+    }
+    .light .bg-grid-pattern {
+      background-image: 
+        linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+    }
+
+    /* Live Text Editing Mode Styles */
+    body.is-editing [data-editable="true"],
+    body.is-editing h1,
+    body.is-editing h2,
+    body.is-editing h3,
+    body.is-editing h4,
+    body.is-editing p,
+    body.is-editing span:not(.no-edit),
+    body.is-editing li {
+      transition: outline 0.15s ease, background 0.15s ease;
+    }
+    body.is-editing [contenteditable="true"]:hover {
+      outline: 1px dashed rgba(255, 59, 20, 0.6) !important;
+      outline-offset: 3px;
+      cursor: text;
+    }
+    body.is-editing [contenteditable="true"]:focus {
+      outline: 1.5px solid #FF3B14 !important;
+      outline-offset: 3px;
+      background: rgba(255, 59, 20, 0.08) !important;
+    }
+
+    /* Slide Box Layout & Responsive Alignment */
+    .slide-outer-box {
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: zoom 0.2s ease, transform 0.2s ease;
+      transform-origin: top center;
+    }
+  </style>
+</head>
+<body class="bg-carbon text-white font-body antialiased transition-colors duration-200">
+
+  <!-- TOP NAVIGATION BAR (HTML to Figma Helper) -->
+  <header class="fixed top-0 left-0 right-0 h-14 bg-carbon/90 dark:bg-carbon/90 light:bg-concrete/90 backdrop-blur border-b border-carbon-border z-50 px-6 flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <span class="font-display font-black text-lg tracking-widest text-white">CEMENTO</span>
+      <span class="font-mono text-xs px-2 py-0.5 bg-vermilion-dim text-vermilion border border-vermilion tracking-wider">[ HTML to FIGMA READY ]</span>
+      <span class="hidden md:inline font-mono text-xs text-neutral-400">1920 × 1080px (16:9) | 80px Outer Margins</span>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <!-- Screen Scale / Alignment Control -->
+      <div class="flex items-center gap-1.5 font-mono text-xs border border-carbon-border bg-carbon-surface px-2.5 py-1">
+        <span class="text-neutral-400">화면 배율:</span>
+        <select id="zoomSelect" class="bg-[#18181A] text-white font-mono text-xs focus:outline-none cursor-pointer">
+          <option value="fit" selected>🖥️ 화면 폭에 맞춤 (Fit)</option>
+          <option value="100">100% (원문 1920px)</option>
+          <option value="75">75% (소형 모니터)</option>
+          <option value="50">50% (전체 조감)</option>
+        </select>
+      </div>
+
+      <!-- Edit Mode Toggle Button -->
+      <button id="editToggleBtn" class="px-3 py-1 font-mono text-xs border border-carbon-border bg-carbon-surface hover:bg-carbon-hover text-neutral-200 transition flex items-center gap-1.5" title="슬라이드의 모든 텍스트를 클릭해서 자유롭게 수정할 수 있습니다">
+        <span>✏️</span>
+        <span id="editText">텍스트 직접 수정: OFF</span>
+      </button>
+
+      <button id="themeToggle" class="px-3 py-1 font-mono text-xs border border-carbon-border bg-carbon-surface hover:bg-carbon-hover text-neutral-200 transition">
+        테마 변경 (Dark / Light)
+      </button>
+      <button id="copyAllBtn" class="px-3 py-1 font-mono text-xs bg-vermilion hover:bg-vermilion-hover text-white transition flex items-center gap-2">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+        <span>HTML to Figma URL 복사</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- PRESENTATION CONTAINER (ALL 7 SLIDES AS EXACT 1920x1080 FRAMES) -->
+  <main id="deck-main" class="pt-20 pb-28 w-full flex flex-col items-center gap-16 px-6 overflow-x-auto min-h-screen">
+
+    <!-- ====================================================================
+         SLIDE 01: COVER & MANIFESTO
+         ==================================================================== -->
+    <div class="slide-outer-box relative group">
+      <div class="absolute -top-8 left-0 right-0 flex justify-between items-center text-xs font-mono text-neutral-400">
+        <span>FRAME 01 // [ COVER & MANIFESTO ]</span>
+        <button class="copy-slide-btn hover:text-vermilion underline" data-slide-id="slide-01">이 슬라이드만 HTML 복사</button>
+      </div>
+
+      <section id="slide-01" class="w-[1920px] h-[1080px] min-w-[1920px] min-h-[1080px] p-[80px] bg-carbon dark:bg-[#0D0D0E] light:bg-[#F4F4F1] border border-carbon-border bg-grid-pattern relative flex flex-col justify-between overflow-hidden shadow-2xl text-white light:text-neutral-900 box-border">
+        
+        <!-- Crosshairs -->
+        <div class="absolute top-8 left-8 text-neutral-500 font-mono text-sm pointer-events-none">+</div>
+        <div class="absolute top-8 right-8 text-neutral-500 font-mono text-sm pointer-events-none">+</div>
+        <div class="absolute bottom-8 left-8 text-neutral-500 font-mono text-sm pointer-events-none">+</div>
+        <div class="absolute bottom-8 right-8 text-neutral-500 font-mono text-sm pointer-events-none">+</div>
+
+        <!-- Meta Bar -->
+        <div class="flex justify-between items-center pb-5 border-b border-carbon-border font-mono text-xs tracking-wider">
+          <div class="flex items-center gap-4">
+            <span class="text-vermilion font-bold">[ CEMENTO : ROME × SEOUL ]</span>
+            <span class="text-neutral-600">//</span>
+            <span class="text-neutral-400">[ CONFIDENTIAL STRATEGY PROPOSAL 2026-2027 ]</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-neutral-500">REF // CMNT-2026-V1</span>
+            <span class="px-2.5 py-1 bg-carbon-surface border border-carbon-border text-white font-bold">01 / 07</span>
+          </div>
+        </div>
+
+        <!-- Center Giant Title & Manifesto -->
+        <div class="my-auto py-12 flex flex-col gap-6">
+          <div class="flex items-baseline gap-6">
+            <h1 class="text-[140px] font-display font-black tracking-[-0.05em] leading-[0.88] text-white">CEMENTO</h1>
+            <div class="w-7 h-7 bg-vermilion inline-block mb-3"></div>
+          </div>
+          <h2 class="text-3xl font-display font-semibold text-neutral-200 tracking-tight max-w-[1300px] leading-tight">
+            Bridging International Academies & Seoul's Production Infrastructure
+          </h2>
+          <div class="inline-flex items-center gap-4 px-5 py-3 bg-carbon-surface border border-carbon-border w-fit mt-2">
+            <span class="font-mono text-xs font-bold text-vermilion tracking-wider">CO-FOUNDERS //</span>
+            <span class="text-sm font-medium text-neutral-200">Yvannoé Kruger (Ex-POUSH) × Kyeongnan Kim (CEO, D_RECTUS)</span>
+          </div>
+        </div>
+
+        <!-- Bottom Modular Metadata Columns -->
+        <div class="grid grid-cols-4 border-t border-b border-carbon-border font-mono">
+          <div class="p-6 border-r border-carbon-border">
+            <div class="text-xs text-neutral-500 mb-2">[ DURATION & TENURE ]</div>
+            <div class="text-sm font-bold text-white leading-relaxed">2026 — 2047<br><span class="text-vermilion">[ 21-YEAR ANCHOR ]</span></div>
+          </div>
+          <div class="p-6 border-r border-carbon-border">
+            <div class="text-xs text-neutral-500 mb-2">[ DUAL GEOGRAPHY ]</div>
+            <div class="text-sm font-bold text-white leading-relaxed">VIA CASILINA, PIGNETO (ROME)<br>× SEOUL SATELLITE</div>
+          </div>
+          <div class="p-6 border-r border-carbon-border">
+            <div class="text-xs text-neutral-500 mb-2">[ OPERATING MODEL ]</div>
+            <div class="text-sm font-bold text-white leading-relaxed">1:1 RECIPROCAL PRODUCTION<br>& BILATERAL ATELIER EXCHANGE</div>
+          </div>
+          <div class="p-6">
+            <div class="text-xs text-neutral-500 mb-2">[ CLASSIFICATION ]</div>
+            <div class="text-sm font-bold text-white leading-relaxed">PERMANENT INFRASTRUCTURE<br>SPECIFICATION SPEC.01</div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="flex justify-between items-center pt-5 border-t border-carbon-border font-mono text-xs text-neutral-500">
+          <div>© 2026 CEMENTO BILATERAL CONSORTIUM // ROME × SEOUL</div>
+          <div>FORM FOLLOWS INFRASTRUCTURE</div>
+          <div>COORD: 41.8902° N, 12.5284° E / 37.5665° N, 126.9780° E</div>
+        </div>
+
+      </section>
+    </div>
+
+
+    <!-- ====================================================================
+         SLIDE 02: PROBLEM & THE SHIFT (CONTEXT & STRUCTURAL NEED)
+         ==================================================================== -->
+    <div class="slide-outer-box relative group">
+      <div class="absolute -top-8 left-0 right-0 flex justify-between items-center text-xs font-mono text-neutral-400">
+        <span>FRAME 02 // [ 01. CONTEXT & STRUCTURAL NEED ]</span>
+        <button class="copy-slide-btn hover:text-vermilion underline" data-slide-id="slide-02">이 슬라이드만 HTML 복사</button>
+      </div>
+
+      <section id="slide-02" class="w-[1920px] h-[1080px] min-w-[1920px] min-h-[1080px] p-[80px] bg-carbon dark:bg-[#0D0D0E] border border-carbon-border bg-grid-pattern relative flex flex-col justify-between overflow-hidden shadow-2xl text-white box-border">
+        
+        <!-- Meta Bar -->
+        <div class="flex justify-between items-center pb-5 border-b border-carbon-border font-mono text-xs tracking-wider">
+          <div class="flex items-center gap-4">
+            <span class="text-vermilion font-bold">[ 01. CONTEXT & STRUCTURAL NEED ]</span>
+            <span class="text-neutral-600">//</span>
+            <span class="text-neutral-400">PARADIGM SHIFT & STRUCTURAL BOTTLENECK</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-neutral-500">SYSTEM DEFICIT ANALYSIS</span>
+            <span class="px-2.5 py-1 bg-carbon-surface border border-carbon-border text-white font-bold">02 / 07</span>
+          </div>
+        </div>
+
+        <!-- Headline -->
+        <div class="my-4">
+          <h2 class="text-5xl font-display font-extrabold tracking-tight text-white uppercase leading-tight">
+            Beyond the Ephemeral: From Temporary Fairs to Long-Term Infrastructure
+          </h2>
+          <p class="text-lg text-neutral-400 mt-3 max-w-[1400px] leading-relaxed">
+            The contemporary global art circuit is paralyzed by transient pop-up exhibitions and prohibitive fabrication costs. Asian artists in Europe remain structurally excluded from monumental production capabilities.
+          </p>
+        </div>
+
+        <!-- 2-Column Asymmetric Grid -->
+        <div class="grid grid-cols-[1fr_1.15fr] gap-8 flex-1 my-3">
+          
+          <!-- Left: Status Quo -->
+          <div class="border border-carbon-border bg-carbon-alt flex flex-col">
+            <div class="p-6 border-b border-carbon-border flex justify-between items-center">
+              <span class="font-display font-bold text-lg uppercase tracking-wide text-neutral-200">The Status Quo</span>
+              <span class="font-mono text-xs px-2 py-0.5 border border-carbon-border text-neutral-400">[ SYSTEMIC BOTTLENECK ]</span>
+            </div>
+            <div class="p-6 flex flex-col gap-5 flex-1">
+              <div class="p-4 border border-carbon-border bg-carbon-surface">
+                <div class="font-mono text-xs font-bold text-vermilion mb-1">01 / SHORT-TERM ART FAIRS</div>
+                <div class="text-sm text-neutral-300 leading-relaxed">Ephemeral 5-day sales bursts without establishing sustainable production roots or deep institutional integration in European capitals.</div>
+              </div>
+              <div class="p-4 border border-carbon-border bg-carbon-surface">
+                <div class="font-mono text-xs font-bold text-vermilion mb-1">02 / THE PRODUCTION BOTTLENECK</div>
+                <div class="text-sm text-neutral-300 leading-relaxed">Prohibitive studio rental and machine fabrication costs in Europe, reducing ambitious concepts to small-scale transportable objects.</div>
+              </div>
+              <div class="p-4 border border-carbon-border bg-carbon-surface">
+                <div class="font-mono text-xs font-bold text-vermilion mb-1">03 / STRUCTURAL DISCONNECT</div>
+                <div class="text-sm text-neutral-300 leading-relaxed">Total isolation of Asian creative diaspora from historic national academies (Villa Médicis, American Academy, Villa Massimo).</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: CEMENTO Solution -->
+          <div class="border border-carbon-border bg-carbon-surface flex flex-col relative before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-vermilion">
+            <div class="p-6 border-b border-carbon-border flex justify-between items-center">
+              <span class="font-display font-bold text-lg uppercase tracking-wide text-white">The CEMENTO Solution</span>
+              <span class="font-mono text-xs px-2 py-0.5 border border-vermilion text-vermilion bg-vermilion-dim">[ PERMANENT ANCHOR ]</span>
+            </div>
+            <div class="p-6 flex flex-col gap-5 flex-1">
+              <div class="p-4 border border-carbon-border bg-carbon-alt border-l-4 border-l-vermilion">
+                <div class="font-mono text-xs font-bold text-vermilion mb-1">01 / 21-YEAR SECURED GROUND</div>
+                <div class="text-sm text-white leading-relaxed">A permanent physical footing at Via Casilina in Rome, operating as an unshakeable institutional bridgehead for 2+ decades.</div>
+              </div>
+              <div class="p-4 border border-carbon-border bg-carbon-alt border-l-4 border-l-vermilion">
+                <div class="font-mono text-xs font-bold text-vermilion mb-1">02 / HEAVY INDUSTRIAL MACHINERY</div>
+                <div class="text-sm text-white leading-relaxed">Shared community-scale fabrication floor (metal, timber, heavy casting, 3D additive tech) dismantling fabrication barriers.</div>
+              </div>
+              <div class="p-4 border border-carbon-border bg-carbon-alt border-l-4 border-l-vermilion">
+                <div class="font-mono text-xs font-bold text-vermilion mb-1">03 / RECIPROCAL ACADEMY ACCESS</div>
+                <div class="text-sm text-white leading-relaxed">Direct institutional gateway interfacing Korean fellows with Rome's elite academy constellation and vice versa in Seoul.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="flex justify-between items-center pt-5 border-t border-carbon-border font-mono text-xs text-neutral-500">
+          <div>CEMENTO ARCHITECTURE // SECTION 01: STRUCTURAL ANALYSIS</div>
+          <div>INFRASTRUCTURE OVER EPHEMERALITY</div>
+          <div>ROME × SEOUL</div>
+        </div>
+
+      </section>
+    </div>
+
+
+    <!-- ====================================================================
+         SLIDE 03: ROME ANCHOR: THE CEMENTO SPECIFICATION
+         ==================================================================== -->
+    <div class="slide-outer-box relative group">
+      <div class="absolute -top-8 left-0 right-0 flex justify-between items-center text-xs font-mono text-neutral-400">
+        <span>FRAME 03 // [ 02. ROME HUB : VIA CASILINA ]</span>
+        <button class="copy-slide-btn hover:text-vermilion underline" data-slide-id="slide-03">이 슬라이드만 HTML 복사</button>
+      </div>
+
+      <section id="slide-03" class="w-[1920px] h-[1080px] min-w-[1920px] min-h-[1080px] p-[80px] bg-carbon dark:bg-[#0D0D0E] border border-carbon-border bg-grid-pattern relative flex flex-col justify-between overflow-hidden shadow-2xl text-white box-border">
+        
+        <!-- Meta Bar -->
+        <div class="flex justify-between items-center pb-5 border-b border-carbon-border font-mono text-xs tracking-wider">
+          <div class="flex items-center gap-4">
+            <span class="text-vermilion font-bold">[ 02. ROME HUB : VIA CASILINA ]</span>
+            <span class="text-neutral-600">//</span>
+            <span class="text-neutral-400">INDUSTRIAL ARCHITECTURE SPECIFICATION</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-neutral-500">SITE BLUEPRINT // PIGNETO</span>
+            <span class="px-2.5 py-1 bg-carbon-surface border border-carbon-border text-white font-bold">03 / 07</span>
+          </div>
+        </div>
+
+        <!-- Headline -->
+        <div class="my-4">
+          <h2 class="text-5xl font-display font-extrabold tracking-tight text-white uppercase leading-tight">
+            The Machine Hall & The Integrated Community
+          </h2>
+          <p class="text-lg text-neutral-400 mt-3 max-w-[1400px] leading-relaxed">
+            Located in Pigneto, Rome's dynamic creative core, CEMENTO repurposes a former industrial automobile icon into a collaborative production ecosystem.
+          </p>
+        </div>
+
+        <!-- 3 Structural Cards -->
+        <div class="grid grid-cols-3 gap-8 flex-1 my-3">
+          
+          <!-- Card 1 -->
+          <div class="border border-carbon-border bg-carbon-surface p-8 flex flex-col justify-between relative">
+            <div>
+              <div class="font-mono text-xs font-bold text-vermilion mb-3 tracking-wider">[ 21-YEAR ANCHOR ]</div>
+              <h3 class="text-2xl font-display font-bold text-white mb-2">Former Lancia/Fiat Site</h3>
+              <div class="font-mono text-xs text-neutral-400 pb-3 border-b border-carbon-border">1,000+ SQM RAW ARCHITECTURE</div>
+              <p class="text-sm text-neutral-400 mt-4 leading-relaxed">
+                Secured 21-year tenure in Pigneto. Raw concrete spans, high-clearance overhead cranes, and natural sawtooth clerestory illumination built for heavy material manipulation and immersive installations.
+              </p>
+            </div>
+            <div class="font-mono text-4xl font-black text-neutral-700 text-right mt-6">01</div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="border border-carbon-border bg-carbon-surface p-8 flex flex-col justify-between relative">
+            <div>
+              <div class="font-mono text-xs font-bold text-vermilion mb-3 tracking-wider">[ THE MACHINE HALL ]</div>
+              <h3 class="text-2xl font-display font-bold text-white mb-2">Heavy Production Floor</h3>
+              <div class="font-mono text-xs text-neutral-400 pb-3 border-b border-carbon-border">COMMUNITY-SCALE FABRICATION</div>
+              <p class="text-sm text-neutral-400 mt-4 leading-relaxed">
+                Equipped with industrial CNC milling, robotic arm welding, precision woodworking, large-volume 3D additive printing, and digital fabrication stations operated under a shared resource-pooling ethos.
+              </p>
+            </div>
+            <div class="font-mono text-4xl font-black text-neutral-700 text-right mt-6">02</div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="border border-carbon-border bg-carbon-surface p-8 flex flex-col justify-between relative">
+            <div>
+              <div class="font-mono text-xs font-bold text-vermilion mb-3 tracking-wider">[ GLOBAL ACADEMY HUB ]</div>
+              <h3 class="text-2xl font-display font-bold text-white mb-2">Institutional Constellation</h3>
+              <div class="font-mono text-xs text-neutral-400 pb-3 border-b border-carbon-border">DIRECT WORKSPACE INTEGRATION</div>
+              <p class="text-sm text-neutral-400 mt-4 leading-relaxed">
+                Direct diplomatic and production workspace nexus with Rome's legendary cultural institutes: Villa Médicis (France), Circolo Scandinavo (Nordic), Villa Massimo (Germany), and the American Academy in Rome.
+              </p>
+            </div>
+            <div class="font-mono text-4xl font-black text-neutral-700 text-right mt-6">03</div>
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="flex justify-between items-center pt-5 border-t border-carbon-border font-mono text-xs text-neutral-500">
+          <div>SITE: VIA CASILINA 44, PIGNETO, ROMA</div>
+          <div>POUSH METHODOLOGY // ADAPTIVE INDUSTRIAL REUSE</div>
+          <div>SCALE: 1,000+ SQM FLOOR AREA</div>
+        </div>
+
+      </section>
+    </div>
+
+
+    <!-- ====================================================================
+         SLIDE 04: SEOUL SATELLITE: URBAN REGENERATION
+         ==================================================================== -->
+    <div class="slide-outer-box relative group">
+      <div class="absolute -top-8 left-0 right-0 flex justify-between items-center text-xs font-mono text-neutral-400">
+        <span>FRAME 04 // [ 03. SEOUL SATELLITE HUB ]</span>
+        <button class="copy-slide-btn hover:text-vermilion underline" data-slide-id="slide-04">이 슬라이드만 HTML 복사</button>
+      </div>
+
+      <section id="slide-04" class="w-[1920px] h-[1080px] min-w-[1920px] min-h-[1080px] p-[80px] bg-carbon dark:bg-[#0D0D0E] border border-carbon-border bg-grid-pattern relative flex flex-col justify-between overflow-hidden shadow-2xl text-white box-border">
+        
+        <!-- Meta Bar -->
+        <div class="flex justify-between items-center pb-5 border-b border-carbon-border font-mono text-xs tracking-wider">
+          <div class="flex items-center gap-4">
+            <span class="text-vermilion font-bold">[ 03. SEOUL SATELLITE HUB ]</span>
+            <span class="text-neutral-600">//</span>
+            <span class="text-neutral-400">URBAN INFRASTRUCTURE REGENERATION</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-neutral-500">SEOUL ARCHIVAL SPECIFICATION</span>
+            <span class="px-2.5 py-1 bg-carbon-surface border border-carbon-border text-white font-bold">04 / 07</span>
+          </div>
+        </div>
+
+        <!-- Headline -->
+        <div class="my-4">
+          <h2 class="text-5xl font-display font-extrabold tracking-tight text-white uppercase leading-tight">
+            Not Just Another Residency. A Self-Sustaining Atelier of Freedom.
+          </h2>
+          <p class="text-lg text-neutral-400 mt-3 max-w-[1400px] leading-relaxed">
+            A hybrid public-private venue built on industrial or transport idle land (KORAIL/KTX properties or municipal brownfields), transposing brutalist production freedom into the core of Seoul.
+          </p>
+        </div>
+
+        <!-- 2x2 Quadrant Grid -->
+        <div class="grid grid-cols-2 grid-rows-2 gap-6 flex-1 my-3">
+          
+          <div class="border border-carbon-border bg-carbon-surface p-7 flex flex-col justify-between">
+            <div class="flex justify-between items-center pb-3 border-b border-carbon-border font-mono text-xs">
+              <span class="font-bold text-vermilion">SPEC.01</span>
+              <span class="text-neutral-400">[ FELLOWSHIP PARITY ]</span>
+            </div>
+            <div>
+              <h3 class="text-2xl font-display font-bold text-white mb-2">50% Korean / 50% International Fellows</h3>
+              <p class="text-sm text-neutral-400 leading-relaxed">
+                Strict cohort balance ensuring intense, daily peer friction between premier Korean creators and international fellows sent from Rome's top European academies.
+              </p>
+            </div>
+          </div>
+
+          <div class="border border-carbon-border bg-carbon-surface p-7 flex flex-col justify-between">
+            <div class="flex justify-between items-center pb-3 border-b border-carbon-border font-mono text-xs">
+              <span class="font-bold text-vermilion">SPEC.02</span>
+              <span class="text-neutral-400">[ TEMPORAL FREEDOM ]</span>
+            </div>
+            <div>
+              <h3 class="text-2xl font-display font-bold text-white mb-2">24/7 Sovereign Atelier Access</h3>
+              <p class="text-sm text-neutral-400 leading-relaxed">
+                Round-the-clock studio access liberated from municipal office-hour constraints. Unrestricted industrial fabrication schedules engineered for high-intensity physical and digital creation.
+              </p>
+            </div>
+          </div>
+
+          <div class="border border-carbon-border bg-carbon-surface p-7 flex flex-col justify-between">
+            <div class="flex justify-between items-center pb-3 border-b border-carbon-border font-mono text-xs">
+              <span class="font-bold text-vermilion">SPEC.03</span>
+              <span class="text-neutral-400">[ ASSET ACTIVATION ]</span>
+            </div>
+            <div>
+              <h3 class="text-2xl font-display font-bold text-white mb-2">Transport Brownfield Repurposing</h3>
+              <p class="text-sm text-neutral-400 leading-relaxed">
+                Activating idle rail land, logistics parcels, or industrial substations into a vibrant cultural landmark, turning neglected municipal burdens into high-density international assets.
+              </p>
+            </div>
+          </div>
+
+          <div class="border border-carbon-border bg-carbon-surface p-7 flex flex-col justify-between">
+            <div class="flex justify-between items-center pb-3 border-b border-carbon-border font-mono text-xs">
+              <span class="font-bold text-vermilion">SPEC.04</span>
+              <span class="text-neutral-400">[ ECONOMIC CIRCULARITY ]</span>
+            </div>
+            <div>
+              <h3 class="text-2xl font-display font-bold text-white mb-2">Self-Sustaining F&B & Fashion Events</h3>
+              <p class="text-sm text-neutral-400 leading-relaxed">
+                Commercial culinary concepts, architectural design retail, and premium brand showroom rentals generate predictable operational cash flow, directly subsidizing artist studio grants.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="flex justify-between items-center pt-5 border-t border-carbon-border font-mono text-xs text-neutral-500">
+          <div>OPERATING MODEL: HYBRID PUBLIC-PRIVATE PARTNERSHIP</div>
+          <div>AUTONOMY // PRODUCTION // SUSTAINABILITY</div>
+          <div>TARGET SITES: KORAIL IDLE DEPOTS / MUNICIPAL BROWNFIELDS</div>
+        </div>
+
+      </section>
+    </div>
+
+
+    <!-- ====================================================================
+         SLIDE 05: STRATEGIC IMPACT: PUBLIC VALUE & CSR ROI
+         ==================================================================== -->
+    <div class="slide-outer-box relative group">
+      <div class="absolute -top-8 left-0 right-0 flex justify-between items-center text-xs font-mono text-neutral-400">
+        <span>FRAME 05 // [ 04. STRATEGIC VALUE & SPONSORSHIP ]</span>
+        <button class="copy-slide-btn hover:text-vermilion underline" data-slide-id="slide-05">이 슬라이드만 HTML 복사</button>
+      </div>
+
+      <section id="slide-05" class="w-[1920px] h-[1080px] min-w-[1920px] min-h-[1080px] p-[80px] bg-carbon dark:bg-[#0D0D0E] border border-carbon-border bg-grid-pattern relative flex flex-col justify-between overflow-hidden shadow-2xl text-white box-border">
+        
+        <!-- Meta Bar -->
+        <div class="flex justify-between items-center pb-5 border-b border-carbon-border font-mono text-xs tracking-wider">
+          <div class="flex items-center gap-4">
+            <span class="text-vermilion font-bold">[ 04. STRATEGIC VALUE & SPONSORSHIP ]</span>
+            <span class="text-neutral-600">//</span>
+            <span class="text-neutral-400">DUAL-TRACK VALUE & CSR ROI MATRIX</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-neutral-500">STAKEHOLDER SYNERGY</span>
+            <span class="px-2.5 py-1 bg-carbon-surface border border-carbon-border text-white font-bold">05 / 07</span>
+          </div>
+        </div>
+
+        <!-- Headline -->
+        <div class="my-4">
+          <h2 class="text-5xl font-display font-extrabold tracking-tight text-white uppercase leading-tight">
+            Value Proposition for Public Institutions & Corporate Partners
+          </h2>
+          <p class="text-lg text-neutral-400 mt-3 max-w-[1400px] leading-relaxed">
+            A tailored dual-track architecture delivering measurable cultural diplomacy for governments and high-yield placemaking for forward-thinking enterprises.
+          </p>
+        </div>
+
+        <!-- Dual Track Split -->
+        <div class="grid grid-cols-2 gap-8 flex-1 my-3">
+          
+          <!-- Track 01 -->
+          <div class="border border-carbon-border bg-carbon-surface flex flex-col">
+            <div class="p-6 border-b border-carbon-border bg-carbon-alt">
+              <div class="font-mono text-xs font-bold text-vermilion tracking-wider mb-1">TRACK 01 // PUBLIC & DIPLOMATIC CORPS</div>
+              <div class="font-mono text-xs text-neutral-400">TARGET: MCST, ARKO, KAMS, ITALIAN EMBASSY, EUNIC</div>
+            </div>
+            <div class="p-6 flex flex-col gap-4 flex-1">
+              <div class="p-4 border border-carbon-border bg-carbon">
+                <h4 class="font-display font-bold text-base text-white mb-1">Permanent Footprint in Rome's Elite Academy Circuit</h4>
+                <p class="text-xs text-neutral-400 leading-relaxed">Establishes Korea’s first sovereign year-round institutional foothold inside Rome’s closed academy constellation alongside Villa Médicis and Villa Massimo.</p>
+              </div>
+              <div class="p-4 border border-carbon-border bg-carbon">
+                <h4 class="font-display font-bold text-base text-white mb-1">Reciprocal Bilateral Fellowship Architecture</h4>
+                <p class="text-xs text-neutral-400 leading-relaxed">Formalized residency exchange channels channeling European master creators into Korea's manufacturing ecosystem and vice-versa.</p>
+              </div>
+              <div class="p-4 border border-carbon-border bg-carbon">
+                <h4 class="font-display font-bold text-base text-white mb-1">4× Public Fund Efficiency Multiplier</h4>
+                <p class="text-xs text-neutral-400 leading-relaxed">Direct infrastructure empowerment rather than ephemeral commercial booth rentals, securing 21 years of continuous programmatic ROI.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Track 02 -->
+          <div class="border border-carbon-border bg-carbon-surface flex flex-col">
+            <div class="p-6 border-b border-carbon-border bg-carbon-alt">
+              <div class="font-mono text-xs font-bold text-vermilion tracking-wider mb-1">TRACK 02 // PRIVATE CORPORATE & ESG CSR</div>
+              <div class="font-mono text-xs text-neutral-400">TARGET: REAL ESTATE DEVELOPERS, MOBILITY, CONGLOMERATES</div>
+            </div>
+            <div class="p-6 flex flex-col gap-4 flex-1">
+              <div class="p-4 border border-carbon-border bg-carbon">
+                <h4 class="font-display font-bold text-base text-white mb-1">Transformational Urban Placemaking</h4>
+                <p class="text-xs text-neutral-400 leading-relaxed">Transforming dormant industrial/transit parcels into high-density global creative capital with massive civic foot traffic and goodwill.</p>
+              </div>
+              <div class="p-4 border border-carbon-border bg-carbon">
+                <h4 class="font-display font-bold text-base text-white mb-1">Authentic ESG & Cultural Brand Association</h4>
+                <p class="text-xs text-neutral-400 leading-relaxed">Direct partnership with pioneering European-Asian creative production, positioning sponsors as genuine cultural infrastructure patrons.</p>
+              </div>
+              <div class="p-4 border border-carbon-border bg-carbon">
+                <h4 class="font-display font-bold text-base text-white mb-1">Commercial Cross-Synergy</h4>
+                <p class="text-xs text-neutral-400 leading-relaxed">Priority access to venue spaces for tier-1 brand presentations, design weeks, cutting-edge material R&D, and collector previews.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="flex justify-between items-center pt-5 border-t border-carbon-border font-mono text-xs text-neutral-500">
+          <div>DIPLOMATIC & ECONOMIC ALIGNMENT // METRICS: CIVIC ROI</div>
+          <div>SYMMETRIC VALUE CREATION</div>
+          <div>CEMENTO PARTNERSHIP FRAMEWORK 2026-2027</div>
+        </div>
+
+      </section>
+    </div>
+
+
+    <!-- ====================================================================
+         SLIDE 06: GOVERNANCE & 1:1 RECIPROCAL MODEL
+         ==================================================================== -->
+    <div class="slide-outer-box relative group">
+      <div class="absolute -top-8 left-0 right-0 flex justify-between items-center text-xs font-mono text-neutral-400">
+        <span>FRAME 06 // [ 05. OPERATIONAL FRAMEWORK & FINANCES ]</span>
+        <button class="copy-slide-btn hover:text-vermilion underline" data-slide-id="slide-06">이 슬라이드만 HTML 복사</button>
+      </div>
+
+      <section id="slide-06" class="w-[1920px] h-[1080px] min-w-[1920px] min-h-[1080px] p-[80px] bg-carbon dark:bg-[#0D0D0E] border border-carbon-border bg-grid-pattern relative flex flex-col justify-between overflow-hidden shadow-2xl text-white box-border">
+        
+        <!-- Meta Bar -->
+        <div class="flex justify-between items-center pb-5 border-b border-carbon-border font-mono text-xs tracking-wider">
+          <div class="flex items-center gap-4">
+            <span class="text-vermilion font-bold">[ 05. OPERATIONAL FRAMEWORK & FINANCES ]</span>
+            <span class="text-neutral-600">//</span>
+            <span class="text-neutral-400">1:1 RECIPROCAL MODEL & CURATORIAL CHARTER</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-neutral-500">BILATERAL AGREEMENT</span>
+            <span class="px-2.5 py-1 bg-carbon-surface border border-carbon-border text-white font-bold">06 / 07</span>
+          </div>
+        </div>
+
+        <!-- Headline -->
+        <div class="my-4">
+          <h2 class="text-5xl font-display font-extrabold tracking-tight text-white uppercase leading-tight">
+            Equitable In-Kind Structure & Curatorial Autonomy
+          </h2>
+          <p class="text-lg text-neutral-400 mt-3 max-w-[1400px] leading-relaxed">
+            Symmetric resource balancing eliminates cash drain between hubs, while ironclad curatorial co-direction preserves total institutional integrity.
+          </p>
+        </div>
+
+        <!-- 3-Pillar Governance Matrix -->
+        <div class="grid grid-cols-3 gap-8 flex-1 my-3">
+          
+          <div class="border border-carbon-border bg-carbon-surface p-8 flex flex-col justify-between">
+            <div>
+              <div class="font-mono text-4xl font-black text-vermilion mb-4">01</div>
+              <div class="font-mono text-xs text-neutral-400 pb-3 border-b border-carbon-border uppercase">[ LOCAL HOST PRINCIPLE ]</div>
+              <h3 class="text-2xl font-display font-bold text-white mt-4 mb-3">Symmetric In-Kind Provisioning</h3>
+              <p class="text-sm text-neutral-400 leading-relaxed">
+                The Seoul hub provides living quarters, studio space, fabrication machines, and local public relations for Rome fellows. In mirror reciprocity, CEMENTO Rome provides equivalent raw facilities and academy access for Korean fellows.
+              </p>
+            </div>
+            <div class="font-mono text-xs text-vermilion mt-6">[ ZERO CROSS-BORDER CASH DRAIN ]</div>
+          </div>
+
+          <div class="border border-carbon-border bg-carbon-surface p-8 flex flex-col justify-between">
+            <div>
+              <div class="font-mono text-4xl font-black text-vermilion mb-4">02</div>
+              <div class="font-mono text-xs text-neutral-400 pb-3 border-b border-carbon-border uppercase">[ TRAVEL & LOGISTICS ]</div>
+              <h3 class="text-2xl font-display font-bold text-white mt-4 mb-3">Sending-Nation Public Grants</h3>
+              <p class="text-sm text-neutral-400 leading-relaxed">
+                Airfares, living stipends, and shipping costs are underwritten by sending nations' cultural bodies (ARKO, KAMS, Institut Français, Goethe-Institut), creating zero international cross-debt.
+              </p>
+            </div>
+            <div class="font-mono text-xs text-vermilion mt-6">[ PUBLIC DIPLOMATIC GRANT INTEGRATION ]</div>
+          </div>
+
+          <div class="border border-carbon-border bg-carbon-surface p-8 flex flex-col justify-between">
+            <div>
+              <div class="font-mono text-4xl font-black text-vermilion mb-4">03</div>
+              <div class="font-mono text-xs text-neutral-400 pb-3 border-b border-carbon-border uppercase">[ GOVERNANCE CHARTER ]</div>
+              <h3 class="text-2xl font-display font-bold text-white mt-4 mb-3">Bilateral Curatorial Autonomy</h3>
+              <p class="text-sm text-neutral-400 leading-relaxed">
+                Independent selection committees in Seoul and Rome. Equal co-chairmanship: Yvannoé Kruger (Rome operations & European networks) and Kyeongnan Kim (Seoul satellite & Asian production networks) with mandatory co-crediting.
+              </p>
+            </div>
+            <div class="font-mono text-xs text-vermilion mt-6">[ D_RECTUS × KRUGER MANDATORY CO-CREDIT ]</div>
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="flex justify-between items-center pt-5 border-t border-carbon-border font-mono text-xs text-neutral-500">
+          <div>CHARTER: D_RECTUS × YVANNOÉ KRUGER BILATERAL PACT</div>
+          <div>IN-KIND PARITY // BILATERAL CURATORIAL INTEGRITY</div>
+          <div>LEGAL STATUS: PRE-LOI DRAFTING PHASE</div>
+        </div>
+
+      </section>
+    </div>
+
+
+    <!-- ====================================================================
+         SLIDE 07: ROADMAP & STRATEGIC MILESTONES
+         ==================================================================== -->
+    <div class="slide-outer-box relative group">
+      <div class="absolute -top-8 left-0 right-0 flex justify-between items-center text-xs font-mono text-neutral-400">
+        <span>FRAME 07 // [ 06. EXECUTION TIMELINE ]</span>
+        <button class="copy-slide-btn hover:text-vermilion underline" data-slide-id="slide-07">이 슬라이드만 HTML 복사</button>
+      </div>
+
+      <section id="slide-07" class="w-[1920px] h-[1080px] min-w-[1920px] min-h-[1080px] p-[80px] bg-carbon dark:bg-[#0D0D0E] border border-carbon-border bg-grid-pattern relative flex flex-col justify-between overflow-hidden shadow-2xl text-white box-border">
+        
+        <!-- Meta Bar -->
+        <div class="flex justify-between items-center pb-5 border-b border-carbon-border font-mono text-xs tracking-wider">
+          <div class="flex items-center gap-4">
+            <span class="text-vermilion font-bold">[ 06. EXECUTION TIMELINE ]</span>
+            <span class="text-neutral-600">//</span>
+            <span class="text-neutral-400">STRATEGIC MILESTONES 2026 — 2027</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-neutral-500">PHASED DEPLOYMENT</span>
+            <span class="px-2.5 py-1 bg-carbon-surface border border-carbon-border text-white font-bold">07 / 07</span>
+          </div>
+        </div>
+
+        <!-- Headline -->
+        <div class="my-4">
+          <h2 class="text-5xl font-display font-extrabold tracking-tight text-white uppercase leading-tight">
+            Phased Execution (2026 — 2027)
+          </h2>
+          <p class="text-lg text-neutral-400 mt-3 max-w-[1400px] leading-relaxed">
+            A disciplined, step-function deployment ensuring legal anchor validation, academy cohort onboarding, and satellite scaling.
+          </p>
+        </div>
+
+        <!-- Timeline 3 Columns -->
+        <div class="grid grid-cols-3 gap-8 flex-1 my-3">
+          
+          <div class="border border-carbon-border bg-carbon-surface p-8 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center pb-3 border-b border-carbon-border font-mono text-xs">
+                <span class="text-vermilion font-bold">PHASE 01</span>
+                <span class="px-2 py-0.5 border border-vermilion text-vermilion bg-vermilion-dim">ACTIVE</span>
+              </div>
+              <div class="font-mono text-xs text-neutral-400 mt-3 mb-1">Q3 — Q4 2026</div>
+              <h3 class="text-xl font-display font-bold text-white mb-4">Foundational Formalization & Site Scouting</h3>
+              <ul class="flex flex-col gap-2.5 text-xs text-neutral-400">
+                <li class="flex items-start gap-2"><span class="text-vermilion font-mono">—</span><span>Formalization of bilateral LOI between D_RECTUS and Yvannoé Kruger.</span></li>
+                <li class="flex items-start gap-2"><span class="text-vermilion font-mono">—</span><span>Site auditing & architectural blueprinting of Via Casilina Machine Hall.</span></li>
+                <li class="flex items-start gap-2"><span class="text-vermilion font-mono">—</span><span>Public grant track alignment with ARKO, KAMS, and Italian diplomatic bodies.</span></li>
+                <li class="flex items-start gap-2"><span class="text-vermilion font-mono">—</span><span>Scouting and institutional negotiations for Seoul transit/industrial site.</span></li>
+              </ul>
+            </div>
+            <div class="font-mono text-xs text-neutral-500 pt-4 border-t border-carbon-border">[ MILESTONE 01 // LOI SIGNED ]</div>
+          </div>
+
+          <div class="border border-carbon-border bg-carbon-surface p-8 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center pb-3 border-b border-carbon-border font-mono text-xs">
+                <span class="text-vermilion font-bold">PHASE 02</span>
+                <span class="px-2 py-0.5 border border-carbon-border text-neutral-400">SCHEDULED</span>
+              </div>
+              <div class="font-mono text-xs text-neutral-400 mt-3 mb-1">MARCH 2027</div>
+              <h3 class="text-xl font-display font-bold text-white mb-4">CEMENTO Rome Opening & First Cohort</h3>
+              <ul class="flex flex-col gap-2.5 text-xs text-neutral-400">
+                <li class="flex items-start gap-2"><span class="text-vermilion font-mono">—</span><span>Official inauguration of CEMENTO Rome Machine Hall during Rome Art Week.</span></li>
+                <li class="flex items-start gap-2"><span class="text-vermilion font-mono">—</span><span>Deployment of 1st Korean artist cohort (6 fellows) into Rome residency.</span></li>
+                <li class="flex items-start gap-2"><span class="text-vermilion font-mono">—</span><span>Inaugural symposium with Villa Médicis, American Academy, and Circolo Scandinavo.</span></li>
+                <li class="flex items-start gap-2"><span class="text-vermilion font-mono">—</span><span>Finalization of Seoul municipal/KORAIL site concession agreements.</span></li>
+              </ul>
+            </div>
+            <div class="font-mono text-xs text-neutral-500 pt-4 border-t border-carbon-border">[ MILESTONE 02 // ROME OPERATIONAL ]</div>
+          </div>
+
+          <div class="border border-carbon-border bg-carbon-surface p-8 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center pb-3 border-b border-carbon-border font-mono text-xs">
+                <span class="text-vermilion font-bold">PHASE 03</span>
+                <span class="px-2 py-0.5 border border-carbon-border text-neutral-400">PROJECTED</span>
+              </div>
+              <div class="font-mono text-xs text-neutral-400 mt-3 mb-1">LATE 2027</div>
+              <h3 class="text-xl font-display font-bold text-white mb-4">Seoul Satellite Launch & Full Reciprocity</h3>
+              <ul class="flex flex-col gap-2.5 text-xs text-neutral-400">
+                <li class="flex items-start gap-2"><span class="text-vermilion font-mono">—</span><span>Grand opening of CEMENTO Seoul Hub with reciprocal European fellows.</span></li>
+                <li class="flex items-start gap-2"><span class="text-vermilion font-mono">—</span><span>Launch of public-facing Machine Hall fabrication and educational workshops.</span></li>
+                <li class="flex items-start gap-2"><span class="text-vermilion font-mono">—</span><span>Bilateral joint exhibition opening simultaneously in Rome and Seoul.</span></li>
+                <li class="flex items-start gap-2"><span class="text-vermilion font-mono">—</span><span>Activation of commercial F&B / cultural event self-funding revenue loops.</span></li>
+              </ul>
+            </div>
+            <div class="font-mono text-xs text-neutral-500 pt-4 border-t border-carbon-border">[ MILESTONE 03 // FULL ROTATION ]</div>
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="flex justify-between items-center pt-5 border-t border-carbon-border font-mono text-xs text-neutral-500">
+          <div>TARGET INAUGURATION: MARCH 2027 (ROMA) // LATE 2027 (SEOUL)</div>
+          <div>STEP-FUNCTION SCALING // SUSTAINABLE HORIZON</div>
+          <div>PROJECT LEAD: D_RECTUS × KRUGER</div>
+        </div>
+
+      </section>
+    </div>
+
+  </main>
+
+  <!-- Interactive JavaScript for HTML to Figma Copying -->
+  <!-- ========================================================================
+       SECURITY ACCESS GATE (PASSWORD: SEOULCEMENTO)
+       ======================================================================== -->
+  <div id="security-gate" class="fixed inset-0 z-[9999] bg-[#0D0D0E] flex items-center justify-center p-6 bg-grid-pattern">
+    <div class="w-full max-w-md p-8 border border-carbon-border bg-carbon-surface shadow-2xl flex flex-col gap-6 relative">
+      <div class="flex justify-between items-center pb-3 border-b border-carbon-border font-mono text-xs">
+        <span class="text-vermilion font-bold tracking-wider">[ ACCESS GATE ]</span>
+        <span class="text-neutral-500">RESTRICTED // 2026</span>
+      </div>
+      
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="font-display font-black text-2xl tracking-widest text-white">CEMENTO</span>
+          <div class="w-2.5 h-2.5 bg-vermilion"></div>
+        </div>
+        <p class="font-mono text-xs text-neutral-400">ROME × SEOUL STRATEGY PROPOSAL</p>
+        <p class="text-xs text-neutral-400 mt-2">보안을 위해 발급된 접근 키를 입력해 주십시오.</p>
+      </div>
+
+      <form id="auth-form" class="flex flex-col gap-4">
+        <div>
+          <label for="auth-input" class="block font-mono text-[11px] text-neutral-400 uppercase tracking-wider mb-2">
+            ACCESS KEY [ PASSWORD ]
+          </label>
+          <input 
+            type="password" 
+            id="auth-input" 
+            placeholder="SEOULCEMENTO"
+            autocomplete="off"
+            autofocus
+            class="w-full px-4 py-3 bg-[#0D0D0E] border border-carbon-border text-white font-mono text-sm tracking-widest uppercase focus:outline-none focus:border-vermilion transition"
+          />
+          <div id="auth-error" class="hidden font-mono text-xs text-vermilion mt-2 tracking-wide leading-relaxed">
+            [ ACCESS DENIED // INVALID PASSWORD ]<br>[ 접근 불가 // 잘못된 비밀번호입니다 ]
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          class="w-full py-3 bg-vermilion hover:bg-vermilion-hover text-white font-mono text-xs font-bold uppercase tracking-widest transition flex items-center justify-center gap-2"
+        >
+          <span>AUTHENTICATE [ ENTER ]</span>
+          <span>→</span>
+        </button>
+      </form>
+
+      <div class="pt-3 border-t border-carbon-border flex justify-between items-center font-mono text-[10px] text-neutral-600">
+        <span>SECURITY PROTOCOL V1.0</span>
+        <span>CONFIDENTIAL</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Security Access Gate logic (Password: SEOULCEMENTO)
+    (function initAuthGate() {
+      const gate = document.getElementById('security-gate');
+      const form = document.getElementById('auth-form');
+      const input = document.getElementById('auth-input');
+      const error = document.getElementById('auth-error');
+
+      if (sessionStorage.getItem('cemento_auth') === 'granted') {
+        gate.style.display = 'none';
+        return;
+      }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const enteredVal = input.value.trim().toUpperCase();
+        if (enteredVal === 'SEOULCEMENTO') {
+          sessionStorage.setItem('cemento_auth', 'granted');
+          gate.style.opacity = '0';
+          gate.style.transition = 'opacity 0.25s ease-out';
+          setTimeout(() => {
+            gate.style.display = 'none';
+          }, 250);
+        } else {
+          error.classList.remove('hidden');
+          input.classList.add('border-vermilion');
+          input.value = '';
+          input.focus();
+        }
+      });
+    })();
+
+    // Live Text Editing Controller
+    (function initTextEditing() {
+      const editBtn = document.getElementById('editToggleBtn');
+      const editText = document.getElementById('editText');
+      let isEditing = false;
+
+      const editableSelectors = 'h1, h2, h3, h4, p, span:not(.no-edit), li, .text-sm, .text-xs, .text-base';
+      const slides = document.querySelectorAll('section[id^="slide-"]');
+
+      function setEditMode(enable) {
+        isEditing = enable;
+        document.body.classList.toggle('is-editing', isEditing);
+
+        slides.forEach(slide => {
+          const elements = slide.querySelectorAll(editableSelectors);
+          elements.forEach(el => {
+            if (el.children.length === 0 || Array.from(el.childNodes).some(n => n.nodeType === Node.TEXT_NODE && n.textContent.trim().length > 0)) {
+              if (enable) {
+                el.setAttribute('contenteditable', 'true');
+                el.setAttribute('spellcheck', 'false');
+              } else {
+                el.removeAttribute('contenteditable');
+              }
+            }
+          });
+        });
+
+        if (isEditing) {
+          editBtn.classList.add('bg-vermilion', 'border-vermilion', 'text-white');
+          editBtn.classList.remove('bg-carbon-surface', 'border-carbon-border', 'text-neutral-200');
+          editText.textContent = '텍스트 직접 수정: ON (클릭하여 편집)';
+        } else {
+          editBtn.classList.remove('bg-vermilion', 'border-vermilion', 'text-white');
+          editBtn.classList.add('bg-carbon-surface', 'border-carbon-border', 'text-neutral-200');
+          editText.textContent = '텍스트 직접 수정: OFF';
+        }
+      }
+
+      if (editBtn) {
+        editBtn.addEventListener('click', () => {
+          setEditMode(!isEditing);
+        });
+      }
+    })();
+
+    // Auto-Fit & Zoom Controller (Prevents left-side cutoff on all viewports)
+    (function initZoomController() {
+      const slideBoxes = document.querySelectorAll('.slide-outer-box');
+      const zoomSelect = document.getElementById('zoomSelect');
+      let currentMode = 'fit';
+
+      function applyScale() {
+        const winWidth = window.innerWidth;
+        let scale = 1;
+
+        if (currentMode === 'fit') {
+          // Leave 64px padding (32px on each side) for clean Bauhaus framing
+          const targetWidth = winWidth - 64;
+          scale = Math.min(targetWidth / 1920, 1);
+        } else if (currentMode === '100') {
+          scale = 1;
+        } else if (currentMode === '75') {
+          scale = 0.75;
+        } else if (currentMode === '50') {
+          scale = 0.5;
+        }
+
+        slideBoxes.forEach(box => {
+          // CSS zoom adjusts layout and scroll bounds naturally
+          if ('zoom' in document.body.style) {
+            box.style.zoom = scale;
+          } else {
+            box.style.transform = `scale(${scale})`;
+            box.style.transformOrigin = 'top center';
+            box.style.marginBottom = `${(1080 * scale) - 1080 + 40}px`;
+          }
+        });
+      }
+
+      window.addEventListener('resize', () => {
+        if (currentMode === 'fit') applyScale();
+      });
+
+      if (zoomSelect) {
+        zoomSelect.addEventListener('change', (e) => {
+          currentMode = e.target.value;
+          applyScale();
+        });
+      }
+
+      // Initial scale on load
+      applyScale();
+    })();
+
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('light');
+      document.documentElement.classList.toggle('dark');
+    });
+
+    // Copy URL for HTML to Figma plugin
+    const copyAllBtn = document.getElementById('copyAllBtn');
+    copyAllBtn.addEventListener('click', () => {
+      const currentUrl = window.location.href;
+      navigator.clipboard.writeText(currentUrl).then(() => {
+        const originalText = copyAllBtn.innerText;
+        copyAllBtn.innerText = '✓ URL 복사 완료! (Figma 플러그인에 붙여넣기)';
+        setTimeout(() => copyAllBtn.innerText = originalText, 2500);
+      });
+    });
+
+    // Copy single slide HTML
+    document.querySelectorAll('.copy-slide-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const slideId = btn.getAttribute('data-slide-id');
+        const slideEl = document.getElementById(slideId);
+        if (slideEl) {
+          navigator.clipboard.writeText(slideEl.outerHTML).then(() => {
+            const orig = btn.innerText;
+            btn.innerText = '✓ HTML 클립보드 복사 완료!';
+            btn.style.color = '#FF3B14';
+            setTimeout(() => {
+              btn.innerText = orig;
+              btn.style.color = '';
+            }, 2000);
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
