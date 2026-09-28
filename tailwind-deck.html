@@ -353,6 +353,12 @@
         THEME: LIGHT
       </button>
 
+      <!-- Lock Deck Button -->
+      <button id="lockDeckBtn" class="px-2.5 py-1 font-mono text-xs border border-carbon-border bg-carbon-surface hover:bg-carbon-hover text-neutral-300 hover:text-vermilion transition flex items-center gap-1" title="Lock presentation deck (Re-open password gate)">
+        <span>🔒</span>
+        <span>LOCK</span>
+      </button>
+
       <button id="copyAllBtn" class="px-3 py-1 font-mono text-xs bg-vermilion hover:bg-vermilion-hover text-white transition flex items-center gap-2">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
         <span>COPY FIGMA URL</span>
@@ -1098,10 +1104,10 @@
       const form = document.getElementById('auth-form');
       const input = document.getElementById('auth-input');
       const error = document.getElementById('auth-error');
+      const lockBtn = document.getElementById('lockDeckBtn');
 
       if (sessionStorage.getItem('cemento_auth') === 'granted') {
         gate.style.display = 'none';
-        return;
       }
 
       form.addEventListener('submit', (e) => {
@@ -1121,6 +1127,20 @@
           input.focus();
         }
       });
+
+      if (lockBtn) {
+        lockBtn.addEventListener('click', () => {
+          sessionStorage.removeItem('cemento_auth');
+          gate.style.display = 'flex';
+          gate.style.opacity = '1';
+          if (error) error.classList.add('hidden');
+          if (input) {
+            input.value = '';
+            input.classList.remove('border-vermilion');
+            input.focus();
+          }
+        });
+      }
     })();
 
     // Live Text Editing & Persistent Storage Controller
