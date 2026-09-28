@@ -110,6 +110,9 @@
     </div>
 
     <div class="flex items-center gap-3">
+      <!-- Auto-Save Status Indicator -->
+      <span id="saveStatus" class="hidden font-mono text-[11px] text-vermilion tracking-wider uppercase">✓ AUTO-SAVED</span>
+
       <!-- Screen Scale / Alignment Control -->
       <div class="flex items-center gap-1.5 font-mono text-xs border border-carbon-border bg-carbon-surface px-2.5 py-1">
         <span class="text-neutral-400">SCALE:</span>
@@ -127,9 +130,21 @@
         <span id="editText">EDIT TEXT: OFF</span>
       </button>
 
+      <!-- Download / Save HTML Button -->
+      <button id="downloadHtmlBtn" class="px-3 py-1 font-mono text-xs border border-carbon-border bg-carbon-surface hover:bg-carbon-hover text-neutral-200 transition flex items-center gap-1.5" title="Download updated HTML file with your current edits">
+        <svg class="w-3.5 h-3.5 text-vermilion" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+        <span>DOWNLOAD HTML</span>
+      </button>
+
+      <!-- Reset Edits Button -->
+      <button id="resetEditsBtn" class="px-2 py-1 font-mono text-xs border border-carbon-border hover:border-vermilion hover:text-vermilion text-neutral-400 transition" title="Reset all slides to original proposal text">
+        RESET
+      </button>
+
       <button id="themeToggle" class="px-3 py-1 font-mono text-xs border border-carbon-border bg-carbon-surface hover:bg-carbon-hover text-neutral-200 transition">
         THEME: DARK
       </button>
+
       <button id="copyAllBtn" class="px-3 py-1 font-mono text-xs bg-vermilion hover:bg-vermilion-hover text-white transition flex items-center gap-2">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
         <span>COPY FIGMA URL</span>
@@ -872,19 +887,34 @@
       });
     })();
 
-    // Live Text Editing Controller
+    // Live Text Editing & Persistent Storage Controller
     (function initTextEditing() {
       const editBtn = document.getElementById('editToggleBtn');
       const editText = document.getElementById('editText');
+      const saveStatus = document.getElementById('saveStatus');
+      const downloadBtn = document.getElementById('downloadHtmlBtn');
+      const resetBtn = document.getElementById('resetEditsBtn');
+      const deckMain = document.getElementById('deck-main');
       let isEditing = false;
+      const STORAGE_KEY = 'cemento_deck_edits_v1';
+
+      // 1. Restore saved edits from localStorage on load if available
+      try {
+        const savedEdits = localStorage.getItem(STORAGE_KEY);
+        if (savedEdits) {
+          deckMain.innerHTML = savedEdits;
+        }
+      } catch (err) {
+        console.warn("Could not access localStorage:", err);
+      }
 
       const editableSelectors = 'h1, h2, h3, h4, p, span:not(.no-edit), li, .text-sm, .text-xs, .text-base';
-      const slides = document.querySelectorAll('section[id^="slide-"]');
 
       function setEditMode(enable) {
         isEditing = enable;
         document.body.classList.toggle('is-editing', isEditing);
 
+        const slides = document.querySelectorAll('section[id^="slide-"]');
         slides.forEach(slide => {
           const elements = slide.querySelectorAll(editableSelectors);
           elements.forEach(el => {
@@ -913,6 +943,54 @@
       if (editBtn) {
         editBtn.addEventListener('click', () => {
           setEditMode(!isEditing);
+        });
+      }
+
+      // 2. Real-time Auto-Save to localStorage on typing
+      let saveTimer = null;
+      deckMain.addEventListener('input', () => {
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(() => {
+          try {
+            localStorage.setItem(STORAGE_KEY, deckMain.innerHTML);
+            if (saveStatus) {
+              saveStatus.classList.remove('hidden');
+              setTimeout(() => saveStatus.classList.add('hidden'), 2000);
+            }
+          } catch (err) {
+            console.error("Failed to auto-save to localStorage:", err);
+          }
+        }, 400);
+      });
+
+      // 3. Download Updated HTML file with current edits baked in
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', () => {
+          const wasEditing = isEditing;
+          if (wasEditing) setEditMode(false);
+
+          const fullHtml = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+          const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'tailwind-deck.html';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+
+          if (wasEditing) setEditMode(true);
+        });
+      }
+
+      // 4. Reset to Original Template
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          if (confirm("Reset all slides to the original strategy proposal template? Any unsaved edits will be discarded.")) {
+            localStorage.removeItem(STORAGE_KEY);
+            location.reload();
+          }
         });
       }
     })();
@@ -985,23 +1063,23 @@
       });
     });
 
-    // Copy single slide HTML
-    document.querySelectorAll('.copy-slide-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const slideId = btn.getAttribute('data-slide-id');
-        const slideEl = document.getElementById(slideId);
-        if (slideEl) {
-          navigator.clipboard.writeText(slideEl.outerHTML).then(() => {
-            const orig = btn.innerText;
-            btn.innerText = '✓ SLIDE HTML COPIED!';
-            btn.style.color = '#FF3B14';
-            setTimeout(() => {
-              btn.innerText = orig;
-              btn.style.color = '';
-            }, 2000);
-          });
-        }
-      });
+    // Copy single slide HTML using event delegation (preserves functionality across reloads)
+    document.getElementById('deck-main').addEventListener('click', (e) => {
+      const btn = e.target.closest('.copy-slide-btn');
+      if (!btn) return;
+      const slideId = btn.getAttribute('data-slide-id');
+      const slideEl = document.getElementById(slideId);
+      if (slideEl) {
+        navigator.clipboard.writeText(slideEl.outerHTML).then(() => {
+          const orig = btn.innerText;
+          btn.innerText = '✓ SLIDE HTML COPIED!';
+          btn.style.color = '#FF3B14';
+          setTimeout(() => {
+            btn.innerText = orig;
+            btn.style.color = '';
+          }, 2000);
+        });
+      }
     });
   </script>
 </body>
