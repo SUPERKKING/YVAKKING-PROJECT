@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -183,6 +183,28 @@
       color: #111111 !important;
     }
 
+    /* Security Gate in Light Mode */
+    html.light #security-gate {
+      background-color: #ECECE8 !important;
+    }
+    html.light #security-gate > div {
+      background-color: #F4F4F1 !important;
+      border-color: #DCDCDA !important;
+      color: #111111 !important;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.1) !important;
+    }
+    html.light #security-gate .text-white {
+      color: #111111 !important;
+    }
+    html.light #security-gate input {
+      background-color: #ECECE8 !important;
+      border-color: #DCDCDA !important;
+      color: #111111 !important;
+    }
+    html.light #security-gate .border-carbon-border {
+      border-color: #DCDCDA !important;
+    }
+
     /* Accents & Vermilion highlights preserved */
     html.light .text-vermilion {
       color: #FF3B14 !important;
@@ -328,7 +350,7 @@
       </button>
 
       <button id="themeToggle" class="px-3 py-1 font-mono text-xs border border-carbon-border bg-carbon-surface hover:bg-carbon-hover text-neutral-200 transition">
-        THEME: DARK
+        THEME: LIGHT
       </button>
 
       <button id="copyAllBtn" class="px-3 py-1 font-mono text-xs bg-vermilion hover:bg-vermilion-hover text-white transition flex items-center gap-2">
@@ -1658,10 +1680,14 @@
         } catch (e) {}
       });
 
-      // Restore saved theme on load
+      // Restore saved theme on load (Default is LIGHT)
       try {
         const savedTheme = localStorage.getItem('cemento_theme');
-        if (savedTheme === 'light') {
+        if (savedTheme === 'dark') {
+          document.documentElement.classList.add('dark');
+          document.documentElement.classList.remove('light');
+          themeToggle.textContent = 'THEME: DARK';
+        } else {
           document.documentElement.classList.add('light');
           document.documentElement.classList.remove('dark');
           themeToggle.textContent = 'THEME: LIGHT';
