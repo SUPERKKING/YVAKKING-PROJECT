@@ -145,6 +145,12 @@
         <span id="overviewBtnText">VIEW ALL</span>
       </button>
 
+      <!-- Reorder Manager Button -->
+      <button id="reorderModalBtn" class="px-3 py-1 font-mono text-xs border border-carbon-border bg-carbon-surface hover:bg-carbon-hover text-neutral-200 transition flex items-center gap-1.5" title="Open Slide Reorder Manager">
+        <span>⇅</span>
+        <span>REORDER SLIDES</span>
+      </button>
+
       <!-- Screen Scale / Alignment Control -->
       <div class="flex items-center gap-1.5 font-mono text-xs border border-carbon-border bg-carbon-surface px-2.5 py-1">
         <span class="text-neutral-400">SCALE:</span>
@@ -1117,6 +1123,7 @@
       // Clicking any slide in Overview mode zooms in and scrolls to it
       document.getElementById('deck-main').addEventListener('click', (e) => {
         if (!isOverview) return;
+        if (e.target.closest('button')) return;
         const slideBox = e.target.closest('.slide-outer-box');
         if (slideBox) {
           toggleOverview(false);
@@ -1300,10 +1307,15 @@
       });
     })();
 
-    // Reorder Controller (Move Slide ▲ UP / ▼ DOWN)
+    // Reorder Controller (Move Slide ▲ UP / ▼ DOWN & Reorder Manager Modal)
     (function initReorderController() {
       const deckMain = document.getElementById('deck-main');
       const saveStatus = document.getElementById('saveStatus');
+      const reorderModalBtn = document.getElementById('reorderModalBtn');
+      const reorderModal = document.getElementById('reorderModal');
+      const closeReorderModal = document.getElementById('closeReorderModal');
+      const doneReorderBtn = document.getElementById('doneReorderBtn');
+      const reorderList = document.getElementById('reorderList');
 
       function updateSlideNumbers() {
         const slideBoxes = deckMain.querySelectorAll('.slide-outer-box');
@@ -1343,28 +1355,113 @@
         }
       }
 
+      function moveSlide(box, direction) {
+        if (!box) return false;
+        if (direction === 'up') {
+          const prevBox = box.previousElementSibling;
+          if (prevBox && prevBox.classList.contains('slide-outer-box')) {
+            deckMain.insertBefore(box, prevBox);
+            updateSlideNumbers();
+            return true;
+          }
+        } else if (direction === 'down') {
+          const nextBox = box.nextElementSibling;
+          if (nextBox && nextBox.classList.contains('slide-outer-box')) {
+            deckMain.insertBefore(nextBox, box);
+            updateSlideNumbers();
+            return true;
+          }
+        }
+        return false;
+      }
+
+      // Inline ▲ UP / ▼ DOWN buttons in stream & overview modes
       deckMain.addEventListener('click', (e) => {
         const upBtn = e.target.closest('.reorder-up-btn');
         const downBtn = e.target.closest('.reorder-down-btn');
 
         if (upBtn) {
           const currentBox = upBtn.closest('.slide-outer-box');
-          const prevBox = currentBox.previousElementSibling;
-          if (prevBox && prevBox.classList.contains('slide-outer-box')) {
-            deckMain.insertBefore(currentBox, prevBox);
-            updateSlideNumbers();
+          if (moveSlide(currentBox, 'up')) {
             currentBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }
         } else if (downBtn) {
           const currentBox = downBtn.closest('.slide-outer-box');
-          const nextBox = currentBox.nextElementSibling;
-          if (nextBox && nextBox.classList.contains('slide-outer-box')) {
-            deckMain.insertBefore(nextBox, currentBox);
-            updateSlideNumbers();
+          if (moveSlide(currentBox, 'down')) {
             currentBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }
         }
       });
+
+      // Render Reorder Modal List
+      function renderModalList() {
+        if (!reorderList) return;
+        reorderList.innerHTML = '';
+        const slideBoxes = Array.from(deckMain.querySelectorAll('.slide-outer-box'));
+        const total = slideBoxes.length;
+
+        slideBoxes.forEach((box, idx) => {
+          const num = idx + 1;
+          const numStr = num < 10 ? '0' + num : String(num);
+
+          // Get title from header or h1/h2
+          const headerSpan = box.querySelector('.absolute.-top-8 span');
+          let title = `FRAME ${numStr}`;
+          if (headerSpan) {
+            const raw = headerSpan.textContent.replace(/FRAME\s+\d+\s*\/\/\s*/, '').trim();
+            if (raw) title = raw;
+          }
+          const h1 = box.querySelector('h1');
+          const h2 = box.querySelector('h2');
+          let sub = '';
+          if (h1 && h1.textContent.trim()) sub = h1.textContent.trim().slice(0, 38);
+          if (h2 && h2.textContent.trim() && !sub) sub = h2.textContent.trim().slice(0, 38);
+
+          const item = document.createElement('div');
+          item.className = 'flex items-center justify-between p-3 bg-carbon-surface border border-carbon-border hover:border-neutral-500 transition group';
+          item.innerHTML = `
+            <div class="flex items-center gap-3 overflow-hidden">
+              <span class="font-mono text-xs font-bold px-2 py-0.5 bg-black/60 border border-carbon-border text-vermilion shrink-0">${numStr}</span>
+              <div class="flex flex-col truncate">
+                <span class="font-mono text-xs font-bold text-white truncate">${title}</span>
+                ${sub ? `<span class="font-mono text-[11px] text-neutral-400 truncate">${sub}</span>` : ''}
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0 ml-2">
+              <button class="modal-up-btn px-2.5 py-1 bg-carbon hover:bg-vermilion hover:text-white border border-carbon-border text-neutral-300 font-mono text-xs font-bold transition disabled:opacity-25 disabled:pointer-events-none" ${idx === 0 ? 'disabled' : ''} title="Move up">▲ UP</button>
+              <button class="modal-down-btn px-2.5 py-1 bg-carbon hover:bg-vermilion hover:text-white border border-carbon-border text-neutral-300 font-mono text-xs font-bold transition disabled:opacity-25 disabled:pointer-events-none" ${idx === total - 1 ? 'disabled' : ''} title="Move down">▼ DOWN</button>
+            </div>
+          `;
+
+          item.querySelector('.modal-up-btn')?.addEventListener('click', () => {
+            if (moveSlide(box, 'up')) renderModalList();
+          });
+          item.querySelector('.modal-down-btn')?.addEventListener('click', () => {
+            if (moveSlide(box, 'down')) renderModalList();
+          });
+
+          reorderList.appendChild(item);
+        });
+      }
+
+      if (reorderModalBtn) {
+        reorderModalBtn.addEventListener('click', () => {
+          renderModalList();
+          reorderModal.classList.remove('hidden');
+        });
+      }
+
+      if (closeReorderModal) {
+        closeReorderModal.addEventListener('click', () => reorderModal.classList.add('hidden'));
+      }
+      if (doneReorderBtn) {
+        doneReorderBtn.addEventListener('click', () => reorderModal.classList.add('hidden'));
+      }
+      if (reorderModal) {
+        reorderModal.addEventListener('click', (e) => {
+          if (e.target === reorderModal) reorderModal.classList.add('hidden');
+        });
+      }
     })();
 
     // Theme toggle
@@ -1405,5 +1502,30 @@
       }
     });
   </script>
+
+  <!-- REORDER SLIDES MODAL -->
+  <div id="reorderModal" class="hidden fixed inset-0 z-[100] bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-carbon border border-carbon-border w-full max-w-xl p-6 shadow-2xl flex flex-col gap-4 text-white">
+      <div class="flex justify-between items-center border-b border-carbon-border pb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-vermilion font-mono font-bold text-sm">⇅</span>
+          <h3 class="font-display font-bold text-lg tracking-wide text-white">REORDER DECK SLIDES</h3>
+        </div>
+        <button id="closeReorderModal" class="text-neutral-400 hover:text-white font-mono text-xs px-2.5 py-1 border border-carbon-border hover:border-vermilion transition">✕ CLOSE</button>
+      </div>
+      <p class="font-mono text-xs text-neutral-400 leading-relaxed">
+        Click <strong class="text-vermilion">▲ UP</strong> or <strong class="text-vermilion">▼ DOWN</strong> to move any slide up or down. All slide indices (<code class="text-neutral-300">FRAME XX</code> and <code class="text-neutral-300">XX / 07</code>) update automatically in real-time and persist to localStorage.
+      </p>
+      <div id="reorderList" class="flex flex-col gap-2 max-h-[60vh] overflow-y-auto pr-1">
+        <!-- Dynamically rendered slide rows -->
+      </div>
+      <div class="flex justify-between items-center pt-3 border-t border-carbon-border">
+        <span class="font-mono text-[11px] text-neutral-500">TIP: You can also use ▲ / ▼ directly above each slide in Stream View!</span>
+        <button id="doneReorderBtn" class="px-5 py-1.5 bg-vermilion hover:bg-vermilion-hover text-white font-mono text-xs font-bold transition">
+          DONE
+        </button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
